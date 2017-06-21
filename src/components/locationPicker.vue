@@ -1,27 +1,20 @@
 <template>
-  <div class="speciePicker">
-    <input type="text" name="search"
-      :value="selection
-      ? selection.COMMON_NAME
-      : null"
-      placeholder="search ..." 
-      @change="searchSpecie">
-    <ul>
-      <li v-for="suggestion in species" @click="select(suggestion)">
-        <p>{{suggestion.COMMON_NAME}}</p>
-        <p>{{suggestion.SCIENTIFIC_NAME}}</p>
-      </li>
-    </ul>
+  <div class="date-picker">
+  <div v-if="coordinates">
+    <p>{{coordinates.latitude}}</p>
+    <p>{{coordinates.longitude}}</p>
+  </div>
+    
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import vbaSpecies from '../api/vbaSpecies';
 
 
 export default {
-  name: 'speciePicker',
+  name: 'locationPicker',
   data () {
     return {
       species: [],
@@ -32,6 +25,19 @@ export default {
     obsId: {
       type: Number,
       default () { return undefined; },
+    },
+  },
+  computed: {
+    ...mapGetters([
+      'allDrafts',
+    ]),
+    coordinates () {
+      const drafts = this.allDrafts;
+      const draftObservation = drafts.find(draft => draft.id === this.obsId);
+      if (!draftObservation || draftObservation.length < 1) return '';
+      const coordinates = draftObservation.images[0];
+      console.log(`image coordinates : ${coordinates}`);
+      return coordinates;
     },
   },
   methods: {

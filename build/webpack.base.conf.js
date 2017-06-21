@@ -61,7 +61,16 @@ module.exports = {
           limit: 10000,
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
-      }
+      },
+      {
+        test: /worker\.js$/,
+        include: resolve('src'),
+        use: [
+          // { loader: 'worker-loader' },
+          { loader: 'babel-loader' }
+        ]
+        // loader: 'worker!babel?presets[]=es2015',
+      },
     ]
   }
 }

@@ -15,7 +15,9 @@
 </template>
 
 <script>
-import Exif from 'exif-js';
+// import Exif from 'exif-js';
+import { mapActions, mapGetters } from 'vuex';
+
 
 export default {
   name: 'imagePicker',
@@ -24,7 +26,17 @@ export default {
       files: [],
     };
   },
+  props: {
+    obsId: {
+      type: Number,
+      default () { return undefined; },
+    },
+  },
   methods: {
+    ...mapActions([
+      'getCoordinates',
+      'addImage',
+    ]),
     onFileChange (e) {
       const files = e.target.files;
       if (!files.length) {
@@ -32,62 +44,36 @@ export default {
       }
       [...files].forEach((file) => {
         this.getCoordinates(file)
-          .then((pos) => {
+          .then(({ ddLatitude, ddLongitude, datetimeString }) => {
+            console.log(ddLatitude, ddLongitude, datetimeString);
             const image = {
               data: file,
-              position: pos,
+              position: {
+                latitude: ddLatitude,
+                longitude: ddLongitude,
+              },
+              datetime: datetimeString,
             };
-            this.$data.files.push(image);
-          });
+            const obsId = this.obsId;
+            this.$store.dispatch('addImage', { image, obsId });
+          }).catch(err => console.log(err));
       });
-    },
-    getCoordinates (file) {
-      function getExif (image) {
-        return new Promise((resolve, reject) => {
-          Exif.getData(image, function exifCallback () {
-            const latitude = Exif.getTag(this, 'GPSLatitude');
-            const latitudeRef = Exif.getTag(this, 'GPSLatitudeRef');
-            const longitude = Exif.getTag(this, 'GPSLongitude');
-            const longitudeRef = Exif.getTag(this, 'GPSLongitudeRef');
-            if (typeof longitude === 'undefined'
-              || typeof latitude === 'undefined') reject(new Error('no gps data found in exif'));
-            resolve({ latitude, latitudeRef, longitude, longitudeRef });
-          });
-        });
-      }
-      function ConvertDMSToDD (degrees, minutes, seconds, direction) {
-        const dd = Number(degrees)
-          + Number(minutes) / 60
-          + Number(seconds) / (60 * 60);
-        if (direction === 'S' || direction === 'W') {
-          return dd * -1;
-        } // Don't do anything for N or E
-        return dd;
-      }
-      console.time('getExif');
-      return getExif(file)
-        .then((exif) => {
-          console.timeEnd('getExif');
-          const latitude = ConvertDMSToDD(
-            // [Number, Number, Number] to [123, -456, 789]
-            ...exif.latitude.map(n => n.valueOf()),
-            exif.latitudeRef);
-          const longitude = ConvertDMSToDD(
-            ...exif.longitude.map(n => n.valueOf()),
-            exif.longitudeRef);
-          return { latitude, longitude };
-        }).catch((error) => {
-          console.log(error);
-        });
     },
   },
   computed: {
+    ...mapGetters([
+      'allDrafts',
+    ]),
     // supportsPreview () {
     //   return window.FileReader && !!window.CanvasRenderingContext2D;
     // },
     thumbnails () {
-      const files = this.$data.files;
-      return files.map(image => URL.createObjectURL(image.data));
+      const drafts = this.allDrafts;
+      const draftObservation = drafts.find(draft => draft.id === this.obsId);
+      if (draftObservation) {
+        return draftObservation.images.map(image => URL.createObjectURL(image.data));
+      }
+      return [];
     },
   },
 };

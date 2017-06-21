@@ -1,27 +1,16 @@
 <template>
-  <div class="speciePicker">
-    <input type="text" name="search"
-      :value="selection
-      ? selection.COMMON_NAME
-      : null"
-      placeholder="search ..." 
-      @change="searchSpecie">
-    <ul>
-      <li v-for="suggestion in species" @click="select(suggestion)">
-        <p>{{suggestion.COMMON_NAME}}</p>
-        <p>{{suggestion.SCIENTIFIC_NAME}}</p>
-      </li>
-    </ul>
+  <div class="date-picker">
+    <input :value="obsDatetime" id="datetime" type="datetime-local">
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import vbaSpecies from '../api/vbaSpecies';
 
 
 export default {
-  name: 'speciePicker',
+  name: 'datePicker',
   data () {
     return {
       species: [],
@@ -32,6 +21,21 @@ export default {
     obsId: {
       type: Number,
       default () { return undefined; },
+    },
+  },
+  computed: {
+    ...mapGetters([
+      'allDrafts',
+    ]),
+    obsDatetime () {
+      const drafts = this.allDrafts;
+      const draftObservation = drafts.find(draft => draft.id === this.obsId);
+      if (!draftObservation) return '';
+      const datetime = draftObservation.images[0]
+        ? draftObservation.images[0].datetime
+        : undefined;
+      console.log(`obs datetime is ${datetime}`);
+      return datetime;
     },
   },
   methods: {
