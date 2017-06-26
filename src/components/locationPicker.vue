@@ -4,7 +4,6 @@
     <p>{{coordinates.latitude}}</p>
     <p>{{coordinates.longitude}}</p>
   </div>
-    
   </div>
 </template>
 

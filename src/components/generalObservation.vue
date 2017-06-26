@@ -13,10 +13,19 @@
     </div>
     <!-- <speciePicker :obsId="observationId"></speciePicker> -->
     <countPicker :obsId="observationId"></countPicker>
+    <extraInfo></extraInfo>
     <textarea name="notes"
       rows="5">Notes ...</textarea>
     <datePicker :obsId="observationId"></datePicker>
-    <locationPicker :obsId="observationId"></locationPicker>
+    <div class="location-picker" @click="navigateTo('LocationPicker')">
+      <template v-if="position">
+        <p>{{position.latitude}}</p>
+        <p>{{position.longitude}}</p>
+      </template>
+      <template v-else>
+        <p>Enter location :</p>
+      </template>
+    </div>
   </div>
 </template>
 
@@ -24,9 +33,9 @@
 import imagePicker from '@/components/imagePicker';
 import speciePicker from '@/components/speciePicker';
 import datePicker from '@/components/datePicker';
-import locationPicker from '@/components/locationPicker';
+// import locationPicker from '@/components/locationPicker';
 import countPicker from '@/components/countPicker';
-
+import extraInfo from '@/components/extraInfo';
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
@@ -35,8 +44,9 @@ export default {
     imagePicker,
     speciePicker,
     datePicker,
-    locationPicker,
+    // locationPicker,
     countPicker,
+    extraInfo,
   },
   // data () {
   //   return {
@@ -68,6 +78,13 @@ export default {
     },
     scientificName () {
       return 'kangus malinus';
+    },
+    position () {
+      const position = this.activeDraft.position;
+      if (position && position.latitude && position.longitude) {
+        return position;
+      }
+      return null;
     },
   },
   methods: {
