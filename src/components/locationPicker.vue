@@ -1,9 +1,12 @@
 <template>
   <div class="date-picker">
-  <div v-if="coordinates">
-    <p>{{coordinates.latitude}}</p>
-    <p>{{coordinates.longitude}}</p>
+  <div class="map">
+    
   </div>
+    <div v-if="coordinates">
+      <p>{{coordinates.latitude}}</p>
+      <p>{{coordinates.longitude}}</p>
+    </div>
   </div>
 </template>
 
