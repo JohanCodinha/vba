@@ -11,12 +11,10 @@ import vbaSpecies from '../api/vbaSpecies';
 
 export default {
   name: 'datePicker',
-  data () {
-    return {
-      species: [],
-      selection: undefined,
-    };
-  },
+  // data () {
+  //   return {
+  //   };
+  // },
   props: {
     obsId: {
       type: Number,
@@ -26,16 +24,11 @@ export default {
   computed: {
     ...mapGetters([
       'allDrafts',
+      'activeDraft',
     ]),
     obsDatetime () {
-      const drafts = this.allDrafts;
-      const draftObservation = drafts.find(draft => draft.id === this.obsId);
-      if (!draftObservation) return '';
-      const datetime = draftObservation.images[0]
-        ? draftObservation.images[0].datetime
-        : undefined;
-      console.log(`obs datetime is ${datetime}`);
-      return datetime;
+      if (!this.activeDraft) return null;
+      return this.activeDraft.datetime;
     },
   },
   methods: {

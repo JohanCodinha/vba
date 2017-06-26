@@ -34,7 +34,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      'getCoordinates',
+      'hydrateImageMetadata',
       'addImage',
     ]),
     onFileChange (e) {
@@ -42,36 +42,24 @@ export default {
       if (!files.length) {
         return;
       }
-      [...files].forEach((file) => {
-        this.getCoordinates(file)
-          .then(({ ddLatitude, ddLongitude, datetimeString }) => {
-            console.log(ddLatitude, ddLongitude, datetimeString);
-            const image = {
-              data: file,
-              position: {
-                latitude: ddLatitude,
-                longitude: ddLongitude,
-              },
-              datetime: datetimeString,
-            };
-            const obsId = this.obsId;
-            this.$store.dispatch('addImage', { image, obsId });
+      [...files].forEach((image) => {
+        this.$store.dispatch('addImage', { image, obsId: this.obsId });
+        console.log(image, this, this.obsId);
+        this.hydrateImageMetadata({ image, obsId: this.obsId })
+          .then(({ latitude, longitude, datetime }) => {
+            console.log(latitude, longitude, datetime);
           }).catch(err => console.log(err));
       });
     },
   },
   computed: {
     ...mapGetters([
-      'allDrafts',
+      'activeDraft',
     ]),
-    // supportsPreview () {
-    //   return window.FileReader && !!window.CanvasRenderingContext2D;
-    // },
     thumbnails () {
-      const drafts = this.allDrafts;
-      const draftObservation = drafts.find(draft => draft.id === this.obsId);
+      const draftObservation = this.activeDraft;
       if (draftObservation) {
-        return draftObservation.images.map(image => URL.createObjectURL(image.data));
+        return draftObservation.images.map(image => URL.createObjectURL(image));
       }
       return [];
     },

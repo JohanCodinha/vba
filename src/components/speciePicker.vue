@@ -52,6 +52,7 @@ export default {
       console.log(specie, obsId);
       this.$store.dispatch('selectSpecie', { specie, obsId });
       this.$data.selection = specie;
+      this.$router.go(-1);
     },
   },
 };

@@ -24,6 +24,7 @@ export default new Router({
       path: '/search',
       name: 'SpeciePicker',
       component: speciePicker,
+      props: true,
     },
     {
       path: '/generalObs',

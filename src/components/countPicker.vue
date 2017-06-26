@@ -1,10 +1,7 @@
 <template>
-  <div class="date-picker">
-  <div v-if="coordinates">
-    <p>{{coordinates.latitude}}</p>
-    <p>{{coordinates.longitude}}</p>
-  </div>
-    
+  <div class="count-picker">
+    <label for="count">Count:</label>
+    <input :value="count" id="count" type="number">
   </div>
 </template>
 
@@ -14,7 +11,7 @@ import vbaSpecies from '../api/vbaSpecies';
 
 
 export default {
-  name: 'locationPicker',
+  name: 'countPicker',
   // data () {
   //   return {
   //   };
@@ -30,20 +27,19 @@ export default {
       'allDrafts',
       'activeDraft',
     ]),
-    coordinates () {
-      if (!this.activeDraft) return null;
-      return this.activeDraft.position;
-      // const drafts = this.allDrafts;
-      // const draftObservation = this.activeDraft;
-      // if (!draftObservation) return null;
-      // const coordinates = draftObservation.position;
-      // console.log(`coordinates found in exif : ${coordinates ? coordinates.latitude : null}`);
-      // return coordinates;
+    count: {
+      get: function getter () {
+        if (!this.activeDraft) return null;
+        return this.activeDraft.count;
+      },
+      set: function setter (value) {
+        console.log(value);
+      },
     },
   },
   methods: {
     ...mapActions([
-      'selectSpecie',
+      'addCount',
     ]),
     searchSpecie (e) {
       const input = e.target.value;

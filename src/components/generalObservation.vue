@@ -2,7 +2,17 @@
   <div class="general-observation">
     <h2>General Observation</h2>
     <imagePicker :obsId="observationId"></imagePicker>
-    <speciePicker :obsId="observationId"></speciePicker>
+    <div class="specie-picker" @click="navigateTo('SpeciePicker')">
+      <template v-if="taxonId">
+        <p>{{commonName}}</p>
+        <p>{{scientificName}}</p>
+      </template>
+      <template v-else>
+        <p>Search for species...</p>
+      </template>
+    </div>
+    <!-- <speciePicker :obsId="observationId"></speciePicker> -->
+    <countPicker :obsId="observationId"></countPicker>
     <textarea name="notes"
       rows="5">Notes ...</textarea>
     <datePicker :obsId="observationId"></datePicker>
@@ -15,8 +25,9 @@ import imagePicker from '@/components/imagePicker';
 import speciePicker from '@/components/speciePicker';
 import datePicker from '@/components/datePicker';
 import locationPicker from '@/components/locationPicker';
+import countPicker from '@/components/countPicker';
 
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'generalObservation',
@@ -25,11 +36,39 @@ export default {
     speciePicker,
     datePicker,
     locationPicker,
+    countPicker,
   },
-  data () {
-    return {
-      observationId: undefined,
-    };
+  // data () {
+  //   return {
+  //   };
+  // },
+  computed: {
+    ...mapGetters([
+      'allDrafts',
+      'activeDraft',
+    ]),
+    observationId () {
+      return this.activeDraft
+       ? this.activeDraft.id
+       : null;
+    },
+    taxonomy () {
+      const draftObservation = this.activeDraft;
+      return draftObservation
+        ? draftObservation.taxonomy
+        : null;
+    },
+    taxonId () {
+      return this.taxonomy
+        ? this.taxonomy.taxonId
+        : null;
+    },
+    commonName () {
+      return 'kangooroo';
+    },
+    scientificName () {
+      return 'kangus malinus';
+    },
   },
   methods: {
     ...mapActions([
@@ -37,11 +76,20 @@ export default {
     ]),
     async newObservation () {
       const newObs = await this.createObservation();
-      this.$data.observationId = newObs;
-      console.log(newObs);
+      return newObs;
+    },
+    navigateTo (routeName) {
+      this.$router.push({ name: routeName, params: { obsId: this.observationId } });
     },
   },
-  mounted: function mountedEvent () { this.newObservation(); },
+  mounted: async function mountedEvent () {
+    const activeDraft = this.activeDraft;
+    if (!activeDraft) {
+      const obsId = await this.newObservation();
+      console.log(`new draft created ${obsId}`);
+      this.$store.dispatch('setActiveDraft', { obsId });
+    }
+  },
 };
 </script>
 
