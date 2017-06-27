@@ -18,9 +18,9 @@
       rows="5">Notes ...</textarea>
     <datePicker :obsId="observationId"></datePicker>
     <div class="location-picker" @click="navigateTo('LocationPicker')">
-      <template v-if="position">
-        <p>{{position.latitude}}</p>
-        <p>{{position.longitude}}</p>
+      <template v-if="coordinates">
+        <p>{{latitude}}</p>
+        <p>{{longitude}}</p>
       </template>
       <template v-else>
         <p>Enter location :</p>
@@ -79,12 +79,19 @@ export default {
     scientificName () {
       return 'kangus malinus';
     },
-    position () {
-      const position = this.activeDraft.position;
-      if (position && position.latitude && position.longitude) {
-        return position;
-      }
-      return null;
+    coordinates () {
+      if (!this.activeDraft) return null;
+      return this.activeDraft.position;
+    },
+    latitude () {
+      return this.coordinates
+        ? this.coordinates.latitude
+        : null;
+    },
+    longitude () {
+      return this.coordinates
+        ? this.coordinates.longitude
+        : null;
     },
   },
   methods: {

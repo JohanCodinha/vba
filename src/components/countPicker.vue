@@ -1,7 +1,7 @@
 <template>
   <div class="count-picker">
     <label for="count">Count:</label>
-    <input :value="count" id="count" type="number">
+    <input :value="count" id="count" type="number" pattern="\d*">
   </div>
 </template>
 

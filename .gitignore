@@ -23,3 +23,5 @@ npm-debug.log*
 # esLint #
 ##########
 .eslintcache
+
+src/components/token.js
