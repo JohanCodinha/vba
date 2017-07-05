@@ -1,0 +1,2 @@
+const mapboxToken = 'pk.eyJ1IjoicGFuZWx2dyIsImEiOiJjaW56cmlxaTcxOTk1dTJtM3F2aGE3Y25mIn0.bKj9LERNGK-5royXLrqthg';
+export default mapboxToken;

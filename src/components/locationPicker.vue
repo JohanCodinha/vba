@@ -1,10 +1,22 @@
 <template>
   <div class="location-picker">
   <div id="map" class="mapboxgl-map">
-    <!-- map will be mounted here -->
-<!--     <div class="marker">
-      <p>X</p>
-    </div> -->
+    <div class="location-display">
+      <a href="#" @click="$router.go(-1)">⬅</a>
+      <div>
+        <p>latitude: {{markerLatitude}}</p>
+        <p>longitude: {{markerLongitude}}</p>
+      </div>
+    </div>
+    <img class="center-marker" :style="{ left: markerLeft, top: markerTop}" src="https://image.flaticon.com/icons/png/128/8/8168.png">
+    <div v-show="showButton" class="validate-location actions">
+      <button class="action-button" @click="pickLocation">
+        {{buttonMessage}}
+      </button>
+      <button v-show="coordinates" class="action-button" @click="revertLocation">
+        revert
+      </button>
+    </div>
   </div>
     <div v-if="coordinates && false">
       <p>{{coordinates.latitude}}</p>
@@ -16,15 +28,23 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import mapboxgl from 'mapbox-gl';
-import vbaSpecies from '../api/vbaSpecies';
 import mapboxToken from './token';
 
 export default {
   name: 'locationPicker',
-  // data () {
-  //   return {
-  //   };
-  // },
+  data () {
+    return {
+      centerMarker: {
+        x: null,
+        y: null,
+      },
+      mapCenter: {
+        lng: null,
+        lat: null,
+      },
+      moved: false,
+    };
+  },
   props: {
     obsId: {
       type: Number,
@@ -33,7 +53,6 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'allDrafts',
       'activeDraft',
     ]),
     coordinates () {
@@ -50,90 +69,118 @@ export default {
         ? this.coordinates.longitude
         : null;
     },
+    markerLongitude () {
+      const value = this.mapCenter.lng || this.longitude;
+      return value
+        ? value.toString().slice(0, 10)
+        : value;
+    },
+    markerLatitude () {
+      const value = this.mapCenter.lat || this.latitude;
+      return value
+        ? value.toString().slice(0, 10)
+        : value;
+    },
+    markerTop () {
+      // 48 px is height of the pin image
+      return `${this.centerMarker.y - 48}px`;
+    },
+    markerLeft () {
+      // 24 px is half of pin image
+      return `${this.centerMarker.x - 24}px`;
+    },
+    zoom () {
+      const zoom = this.coordinates
+        ? 12
+        : 5;
+      return zoom;
+    },
+    buttonMessage () {
+      return 'Validate Location';
+    },
+    showButton () {
+      return this.$data.moved;
+    },
+    // showRevertButton () {
+    //   return this
+    // }
   },
   methods: {
     ...mapActions([
       'selectSpecie',
     ]),
-    searchSpecie (e) {
-      const input = e.target.value;
-      console.log(e.target.value);
-      vbaSpecies(input)
-        .then((response) => {
-          console.log(response);
-          this.$data.species = response;
-        });
+    pickLocation () {
+      const location = this.$data.mapCenter;
+      console.log(JSON.stringify(location));
+      return location;
     },
-    select (specie) {
-      const obsId = this.obsId;
-      console.log(specie, obsId);
-      this.$store.dispatch('selectSpecie', { specie, obsId });
-      this.$data.selection = specie;
+    revertLocation () {
+      const center = [this.longitude, this.latitude];
+      this.$data.map.flyTo({
+        center,
+        zoom: 12,
+      });
+      this.$data.map.fire('flystart');
+      this.$data.moved = false;
     },
     createMap () {
+      const data = this.$data;
       const vicCenterlat = -37.228263;
       const vicCenterlon = 145.406267;
       const lat = this.latitude || vicCenterlat;
       const lon = this.longitude || vicCenterlon;
-      // const mapCenterLat = lat || vicCenterlat;
-      // const mapCenterLon = lon || vicCenterlon;
-
       const bounds = [
-        [140.779346, -39.231739], // Southwest coordinates
-        [150.510827, -33.846260],  // Northeast coordinates
+        [136.713355, -44.584973], // Southwest coordinates
+        [153.225627, -27.204801],  // Northeast coordinates
       ];
-
       mapboxgl.accessToken = mapboxToken;
       const map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/panelvw/cj4f5jcy500pw2rsetkub2wos',
         center: [lon, lat],
-        zoom: 5,
+        zoom: this.zoom,
         maxBounds: bounds,
       });
       map.on('load', () => {
-        const mapCenterLon = map.getCenter().lng;
-        const mapCenterLat = map.getCenter().lat;
-        map.addSource('center-point', {
-          type: 'geojson',
-          data: {
-            type: 'Point',
-            coordinates: [
-              mapCenterLon,
-              mapCenterLat,
-            ],
-          },
-        });
+        const mapCenter = map.getCenter();
+        const mapCenterInPx = map.project(map.getCenter());
+        data.centerMarker = {
+          x: mapCenterInPx.x,
+          y: mapCenterInPx.y,
+        };
 
-        map.addLayer({
-          id: 'point',
-          source: 'center-point',
-          type: 'circle',
-          paint: {
-            'circle-radius': 8,
-            'circle-color': 'orange',
-            'circle-opacity': 0.8,
-          },
-        });
-        // disable map rotation using right click + drag
+        data.mapCenter = {
+          lat: mapCenter.lat,
+          lng: mapCenter.lng,
+        };
+       // disable map rotation using right click + drag
         map.dragRotate.disable();
-
         // disable map rotation using touch rotation gesture
         map.touchZoomRotate.disableRotation();
       });
-      map.on('move', (e) => {
-        // map.flyTo({center: [vicCenterlon, vicCenterlat]});
+      map.on('move', () => {
         const center = map.getCenter();
-        console.log(center, e);
-        map.getSource('center-point').setData({
-          type: 'Point',
-          coordinates: [
-            center.lng,
-            center.lat,
-          ],
-        });
+        data.mapCenter.lat = center.lat;
+        data.mapCenter.lng = center.lng;
+        data.moved = true;
       });
-      this.map = map;
+
+      map.on('moveend', () => {
+        if (data.flying) { //eslint-disable-line
+          data.moved = false;
+          map.fire('flyend');
+        }
+      });
+
+      map.on('flyend', () => {
+        data.flying = false; //eslint-disable-line
+      });
+
+      map.on('flystart', () => {
+        data.flying = true; //eslint-disable-line
+      });
+
+      this.$data.map = map;
     },
   },
   mounted () {
@@ -175,41 +222,47 @@ a {
   width: 100vw;
 }
 
-/*.mapboxgl-map::before {
-  background: red;
-  content: "";
-  height: .1rem;
-  left: 46vw;
+.center-marker {
   position: absolute;
-  top: 50vh;
-  width: 8vw;
-  z-index: 1;
+  z-index: 2;
+  width: 48px;
 }
 
-.mapboxgl-map::after {
-  background: red;
-  content: "";
-  height: 50px;
-  left: 50vw;
+.validate-location {
   position: absolute;
-  top: 46.5vh;
-  width: .1rem;
-  z-index: 1;
-}*/
-
-/*.marker {
-  background-color: transparent;
-  text-align: center;
-  height: 1rem;
-  width: 1rem;
-  margin: auto;
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 75%;
   z-index: 2;
-  color: red;
+  box-shadow: 5px black;
+  display: flex;
+}
+
+.action-button {
+  padding: 1rem;
+  background: purple;
+  color: white;
+  border: 1px;
+  margin-left: 2px;
+}
+
+.location-display {
+  position: absolute;
+  z-index: 2;
+  background: white;
+  width: 90vw;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 1%;
+  padding: .2rem;
+  display: flex;
+  font-size: 1rem;
+  align-items: center;
+}
+
+.location-display a {
   font-size: 2rem;
-}*/
+  margin-right: 1rem;
+  margin-left: .5rem;
+}
 </style>

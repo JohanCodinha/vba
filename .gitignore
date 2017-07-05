@@ -24,4 +24,4 @@ npm-debug.log*
 ##########
 .eslintcache
 
-src/components/token.js
+src/components/token.js	
