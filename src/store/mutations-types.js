@@ -3,3 +3,5 @@ export const SAVE_IMAGE = 'SAVE_IMAGE';
 export const SELECT_SPECIE = 'SELECT_SPECIE';
 export const HYDRATE_IMAGE = 'HYDRATE_IMAGE';
 export const SET_ACTIVE_DRAFT = 'SET_ACTIVE_DRAFT';
+export const SAVE_LOCATION = 'SAVE_LOCATION';
+export const SET_COUNT = 'SET_COUNT';

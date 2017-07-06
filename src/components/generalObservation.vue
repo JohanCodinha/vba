@@ -74,14 +74,23 @@ export default {
         : null;
     },
     commonName () {
-      return 'kangooroo';
+      const draft = this.activeDraft;
+      return draft
+        ? draft.taxonomy.commonName
+        : null;
     },
     scientificName () {
-      return 'kangus malinus';
+      const draft = this.activeDraft;
+      return draft
+        ? draft.taxonomy.scientificName
+        : null;
     },
     coordinates () {
-      if (!this.activeDraft) return null;
-      return this.activeDraft.position;
+      const draft = this.activeDraft;
+      if (!draft || !draft.position) return null;
+      return (draft.position.latitude && draft.position.longitude)
+        ? draft.position
+        : null;
     },
     latitude () {
       return this.coordinates

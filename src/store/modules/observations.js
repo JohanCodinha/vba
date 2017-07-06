@@ -20,6 +20,12 @@ const getters = {
 
 // actions
 const actions = {
+  saveLocation ({ commit }, { latitude, longitude, accuracy, obsId }) {
+    commit('SAVE_LOCATION', { latitude, longitude, accuracy, obsId });
+  },
+  setCount ({ commit }, { count, obsId }) {
+    commit('SET_COUNT', { count, obsId });
+  },
   hydrateImageMetadata ({ commit }, { image, obsId }) {
     // return new Promise((resolve, reject) => {
     function getExif (image) {
@@ -137,6 +143,18 @@ const mutations = {
   },
   [types.SET_ACTIVE_DRAFT] (state, { obsId }) {
     state.activeDraft = obsId; // eslint-disable-line no-param-reassign
+  },
+  [types.SAVE_LOCATION] (state, { latitude, longitude, accuracy = 10, obsId }) {
+    const observation = state.drafts.find(obs => obs.id === obsId);
+    Vue.set(observation, 'position', {
+      latitude,
+      longitude,
+      accuracy,
+    });
+  },
+  [types.SET_COUNT] (state, { count, obsId }) {
+    const observation = state.drafts.find(obs => obs.id === obsId);
+    Vue.set(observation, 'count', count);
   },
 };
 

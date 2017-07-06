@@ -1,7 +1,7 @@
 <template>
   <div class="count-picker">
     <label for="count">Count:</label>
-    <input :value="count" id="count" type="number" pattern="\d*">
+    <input v-model="count" id="count" type="number" pattern="\d*">
   </div>
 </template>
 
@@ -30,10 +30,17 @@ export default {
     count: {
       get: function getter () {
         if (!this.activeDraft) return null;
-        return this.activeDraft.count;
+        return this.activeDraft.count || 0;
       },
       set: function setter (value) {
-        console.log(value);
+        const count = Number(value);
+        const obsId = this.obsId;
+        if (!isNaN(count)) {
+          console.log(`count set to ${value}`);
+          this.$store.dispatch('setCount', { count, obsId });
+        } else {
+          console.log(`value : ${count} of type ${typeof count} is not valid`);
+        }
       },
     },
   },

@@ -56,8 +56,11 @@ export default {
       'activeDraft',
     ]),
     coordinates () {
-      if (!this.activeDraft) return null;
-      return this.activeDraft.position;
+      const draft = this.activeDraft;
+      if (!draft || !draft.position) return null;
+      return (draft.position.latitude && draft.position.longitude)
+        ? draft.position
+        : null;
     },
     latitude () {
       return this.coordinates
@@ -101,9 +104,6 @@ export default {
     showButton () {
       return this.$data.moved;
     },
-    // showRevertButton () {
-    //   return this
-    // }
   },
   methods: {
     ...mapActions([
@@ -111,8 +111,11 @@ export default {
     ]),
     pickLocation () {
       const location = this.$data.mapCenter;
-      console.log(JSON.stringify(location));
-      return location;
+      const obsId = this.activeDraft.id;
+      const { lat: latitude, lng: longitude } = location;
+      this.$data.moved = false;
+      this.$store.dispatch('saveLocation', { latitude, longitude, obsId });
+      console.log(JSON.stringify({ latitude, longitude, obsId }));
     },
     revertLocation () {
       const center = [this.longitude, this.latitude];
