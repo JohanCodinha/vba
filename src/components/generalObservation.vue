@@ -26,6 +26,7 @@
         <p>Enter location :</p>
       </template>
     </div>
+  <button @click="upload">Upload</button>
   </div>
 </template>
 
@@ -113,6 +114,11 @@ export default {
     },
     navigateTo (routeName) {
       this.$router.push({ name: routeName, params: { obsId: this.observationId } });
+    },
+    upload () {
+      console.log('uploading start');
+      this.$store.dispatch('uploadObservation', { observation: this.activeDraft });
+      // debugger;
     },
   },
   mounted: async function mountedEvent () {

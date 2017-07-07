@@ -1,11 +1,12 @@
 /* eslint-disable no-shadow */
-// import vbaSpecies from '../../api/vbaSpecies';
 import Vue from 'vue';
+import { uploadObservation, login } from '@/api/vbapi';
 import * as types from '../mutations-types';
+
+console.log(uploadObservation);
 // initial state
 const state = {
   drafts: [],
-  activeDraft: null,
 };
 
 // getters
@@ -13,7 +14,7 @@ const getters = {
   // allProducts: state => state.all
   allDrafts: state => state.drafts,
   activeDraft: (state) => {
-    const ad = state.drafts.find(draft => draft.id === state.activeDraft);
+    const ad = state.drafts.find(draft => draft.id === state.activeDraftId);
     return ad;
   },
 };
@@ -101,6 +102,13 @@ const actions = {
   setActiveDraft ({ commit }, { obsId }) {
     commit('SET_ACTIVE_DRAFT', { obsId });
   },
+  async uploadObservation ({ state }, { observation }) {
+    console.log('login in');
+    console.log(observation);
+    const jwt = await login();
+    const uploadResponse = await uploadObservation(observation, jwt);
+    console.log(jwt, uploadResponse);
+  },
 };
 
 // mutations
@@ -114,7 +122,6 @@ const mutations = {
         commonName: undefined,
         scientificName: undefined,
       },
-      // position: null,
     };
     state.drafts.push(observation);
   },
@@ -142,7 +149,8 @@ const mutations = {
     });
   },
   [types.SET_ACTIVE_DRAFT] (state, { obsId }) {
-    state.activeDraft = obsId; // eslint-disable-line no-param-reassign
+    console.log(obsId);
+    Vue.set(state, 'activeDraftId', obsId);
   },
   [types.SAVE_LOCATION] (state, { latitude, longitude, accuracy = 10, obsId }) {
     const observation = state.drafts.find(obs => obs.id === obsId);
