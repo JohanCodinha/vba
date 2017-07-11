@@ -102,6 +102,10 @@ const actions = {
   setActiveDraft ({ commit }, { obsId }) {
     commit('SET_ACTIVE_DRAFT', { obsId });
   },
+  setExtraInfo ({ commit }, { code, obsId }) {
+    console.log(code, obsId);
+    commit('SET_EXTRA_CODE', { code, obsId });
+  },
   async uploadObservation ({ state }, { observation }) {
     console.log('login in');
     console.log(observation);
@@ -163,6 +167,10 @@ const mutations = {
   [types.SET_COUNT] (state, { count, obsId }) {
     const observation = state.drafts.find(obs => obs.id === obsId);
     Vue.set(observation, 'count', count);
+  },
+  [types.SET_EXTRA_CODE] (state, { code, obsId }) {
+    const observation = state.drafts.find(obs => obs.id === obsId);
+    Vue.set(observation, 'extraInfoCode', code);
   },
 };
 

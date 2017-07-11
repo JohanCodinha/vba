@@ -33,7 +33,7 @@ export default {
         { text: 'Sub fossil', value: 's' },
         { text: 'Voucher specimen', value: 'v' },
       ],
-      selected: null,
+      // selected: null,
     };
   },
   props: {
@@ -47,13 +47,15 @@ export default {
       'allDrafts',
       'activeDraft',
     ]),
-    count: {
+    selected: {
       get: function getter () {
         if (!this.activeDraft) return null;
-        return this.activeDraft.count;
+        return this.activeDraft.extraInfoCode;
       },
-      set: function setter (value) {
-        console.log(value);
+      set: function setter (code) {
+        const obsId = this.obsId;
+        this.$store.dispatch('setExtraInfo', { code, obsId });
+        console.log(code);
       },
     },
   },

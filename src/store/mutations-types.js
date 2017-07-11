@@ -5,3 +5,4 @@ export const HYDRATE_IMAGE = 'HYDRATE_IMAGE';
 export const SET_ACTIVE_DRAFT = 'SET_ACTIVE_DRAFT';
 export const SAVE_LOCATION = 'SAVE_LOCATION';
 export const SET_COUNT = 'SET_COUNT';
+export const SET_EXTRA_CODE = 'SET_EXTRA_CODE';

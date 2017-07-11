@@ -13,7 +13,7 @@
     </div>
     <!-- <speciePicker :obsId="observationId"></speciePicker> -->
     <countPicker :obsId="observationId"></countPicker>
-    <extraInfo></extraInfo>
+    <extraInfo :obsId="observationId"></extraInfo>
     <textarea name="notes"
       rows="5">Notes ...</textarea>
     <datePicker :obsId="observationId"></datePicker>
@@ -34,7 +34,6 @@
 import imagePicker from '@/components/imagePicker';
 import speciePicker from '@/components/speciePicker';
 import datePicker from '@/components/datePicker';
-// import locationPicker from '@/components/locationPicker';
 import countPicker from '@/components/countPicker';
 import extraInfo from '@/components/extraInfo';
 import { mapActions, mapGetters } from 'vuex';
