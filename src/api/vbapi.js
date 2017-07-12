@@ -30,5 +30,5 @@ export const uploadObservation = (observation, jwt) => {
   return axios.post(`${apiUrl}/record`, formData, {
     headers: { 'x-access-token': jwt },
   })
-  .then(res => console.log(res));
+    .then(res => console.log(res));
 };
