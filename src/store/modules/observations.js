@@ -1,9 +1,8 @@
 /* eslint-disable no-shadow */
 import Vue from 'vue';
-import { uploadObservation, login } from '@/api/vbapi';
+// import { uploadObservation } from '@/api/vbapi';
 import * as types from '../mutations-types';
 
-console.log(uploadObservation);
 // initial state
 const state = {
   drafts: [],
@@ -106,13 +105,12 @@ const actions = {
     console.log(code, obsId);
     commit('SET_EXTRA_CODE', { code, obsId });
   },
-  async uploadObservation ({ state }, { observation }) {
-    console.log('login in');
-    console.log(observation);
-    const jwt = await login();
-    const uploadResponse = await uploadObservation(observation, jwt);
-    console.log(jwt, uploadResponse);
-  },
+  // async uploadObservation ({ state }, { observation }) {
+  //   debugger;
+  //   const jwt = state.jwt.value;
+  //   const uploadResponse = await uploadObservation(observation, jwt);
+  //   console.log(uploadResponse);
+  // },
 };
 
 // mutations

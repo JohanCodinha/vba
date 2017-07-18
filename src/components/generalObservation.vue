@@ -59,8 +59,8 @@ export default {
     ]),
     observationId () {
       return this.activeDraft
-       ? this.activeDraft.id
-       : null;
+        ? this.activeDraft.id
+        : null;
     },
     taxonomy () {
       const draftObservation = this.activeDraft;
@@ -117,7 +117,6 @@ export default {
     upload () {
       console.log('uploading start');
       this.$store.dispatch('uploadObservation', { observation: this.activeDraft });
-      // debugger;
     },
   },
   mounted: async function mountedEvent () {

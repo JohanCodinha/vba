@@ -11,8 +11,12 @@ onmessage = function workerTriger (message) {
     const longitude = Exif.getTag(this, 'GPSLongitude');
     const longitudeRef = Exif.getTag(this, 'GPSLongitudeRef');
     const datetime = Exif.getTag(this, 'DateTimeOriginal');
+    const accuracy = Exif.getTag(this, 'GPSHPositioningError');
+    const dop = Exif.getTag(this, 'GPSDOP');
+    console.log(this);
     console.log('from worker :');
-    console.log(latitude, longitude, datetime);
+    console.log(latitude, longitude, datetime, accuracy);
+    debugger;
     postMessage({ latitude, latitudeRef, longitude, longitudeRef, datetime });
   });
 };

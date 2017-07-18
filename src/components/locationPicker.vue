@@ -134,7 +134,7 @@ export default {
       const lon = this.longitude || vicCenterlon;
       const bounds = [
         [136.713355, -44.584973], // Southwest coordinates
-        [153.225627, -27.204801],  // Northeast coordinates
+        [153.225627, -27.204801], // Northeast coordinates
       ];
       mapboxgl.accessToken = mapboxToken;
       const map = new mapboxgl.Map({
@@ -156,7 +156,7 @@ export default {
           lat: mapCenter.lat,
           lng: mapCenter.lng,
         };
-       // disable map rotation using right click + drag
+        // disable map rotation using right click + drag
         map.dragRotate.disable();
         // disable map rotation using touch rotation gesture
         map.touchZoomRotate.disableRotation();
