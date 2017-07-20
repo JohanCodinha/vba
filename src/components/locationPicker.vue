@@ -6,6 +6,8 @@
       <div>
         <p>latitude: {{markerLatitude}}</p>
         <p>longitude: {{markerLongitude}}</p>
+        <p>Accuracy: {{coordinates.accuracy}} m</p>
+        <p>Location: {{locationName}}</p>
       </div>
     </div>
     <img class="center-marker" :style="{ left: markerLeft, top: markerTop}" src="https://image.flaticon.com/icons/png/128/8/8168.png">
@@ -18,7 +20,7 @@
       </button>
     </div>
   </div>
-    <div v-if="coordinates && false">
+    <div v-if="coordinates">
       <p>{{coordinates.latitude}}</p>
       <p>{{coordinates.longitude}}</p>
     </div>
@@ -28,7 +30,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import mapboxgl from 'mapbox-gl';
-import mapboxToken from './token';
+import mapboxToken from '@/api/token';
 
 export default {
   name: 'locationPicker',
@@ -43,6 +45,7 @@ export default {
         lat: null,
       },
       moved: false,
+      zoomLevel: null,
     };
   },
   props: {
@@ -55,12 +58,14 @@ export default {
     ...mapGetters([
       'activeDraft',
     ]),
+    locationName () {
+      return this.activeDraft.position.description;
+    },
     coordinates () {
       const draft = this.activeDraft;
-      if (!draft || !draft.position) return null;
       return (draft.position.latitude && draft.position.longitude)
         ? draft.position
-        : null;
+        : undefined;
     },
     latitude () {
       return this.coordinates
@@ -114,8 +119,8 @@ export default {
       const obsId = this.activeDraft.id;
       const { lat: latitude, lng: longitude } = location;
       this.$data.moved = false;
+      this.$data.map.flyTo({ zoom: 12 });
       this.$store.dispatch('saveLocation', { latitude, longitude, obsId });
-      console.log(JSON.stringify({ latitude, longitude, obsId }));
     },
     revertLocation () {
       const center = [this.longitude, this.latitude];
@@ -174,7 +179,6 @@ export default {
           map.fire('flyend');
         }
       });
-
       map.on('flyend', () => {
         data.flying = false; //eslint-disable-line
       });

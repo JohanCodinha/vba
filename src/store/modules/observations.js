@@ -1,6 +1,6 @@
 /* eslint-disable no-shadow */
 import Vue from 'vue';
-// import { uploadObservation } from '@/api/vbapi';
+import { reverseGeocoding } from '@/api/mapbox';
 import * as types from '../mutations-types';
 
 // initial state
@@ -8,9 +8,8 @@ const state = {
   drafts: [],
 };
 
-// getters
+// Getters
 const getters = {
-  // allProducts: state => state.all
   allDrafts: state => state.drafts,
   activeDraft: (state) => {
     const ad = state.drafts.find(draft => draft.id === state.activeDraftId);
@@ -18,36 +17,41 @@ const getters = {
   },
 };
 
-// actions
+// Actions
 const actions = {
-  saveLocation ({ commit }, { latitude, longitude, accuracy, obsId }) {
+  async saveLocation ({ commit }, { latitude, longitude, accuracy, obsId }) {
     commit('SAVE_LOCATION', { latitude, longitude, accuracy, obsId });
+    try {
+      const place = await reverseGeocoding(longitude, latitude);
+      const description = place.features[0].place_name;
+      if (description) {
+        commit(types.SAVE_LOCATION_DESCRIPTION, { description, obsId });
+      }
+    } catch (error) {
+      console.log(error);
+    }
   },
   setCount ({ commit }, { count, obsId }) {
     commit('SET_COUNT', { count, obsId });
   },
-  hydrateImageMetadata ({ commit }, { image, obsId }) {
-    // return new Promise((resolve, reject) => {
-    function getExif (image) {
+  hydrateImageMetadata ({ commit, dispatch }, { image, obsId }) {
+    function getExif (image, tags) {
       return new Promise((resolve, reject) => {
         // eslint-disable-next-line
         const ExifWorker = require('worker-loader?inline!./worker.js');
         const worker = new ExifWorker();
-        worker.onmessage = function workerResponse (e) {
-          console.log(e.data);
-          resolve(e.data);
-        };
-        worker.onerror = function workerError (e) {
-          reject(e);
-        };
-        worker.postMessage(image);
+        worker.onmessage = message => resolve(message.data);
+        worker.onerror = message => reject(message);
+        worker.postMessage({ image, tags });
       });
     }
     function ConvertDMSToDD (degrees, minutes, seconds, direction) {
-      // [Number, Number, Number] to [123, -456, 789]
-      const dd = Number(degrees)
-        + Number(minutes) / 60
-        + Number(seconds) / (60 * 60);
+      if (typeof degrees !== 'number'
+        || typeof minutes !== 'number'
+        || typeof seconds !== 'number') return undefined;
+      const dd = degrees
+        + minutes / 60
+        + seconds / (60 * 60);
       if (direction === 'S' || direction === 'W') {
         return dd * -1;
       } // Don't do anything for N or E
@@ -57,28 +61,33 @@ const actions = {
       const [date, time] = [...exifDate.split(' ')];
       return `${date.replace(/:/g, '-')}T${time}`;
     }
+    const tags = {
+      latitude: 'GPSLatitude',
+      latitudeRef: 'GPSLatitudeRef',
+      longitude: 'GPSLongitude',
+      longitudeRef: 'GPSLongitudeRef',
+      datetime: 'DateTimeOriginal',
+      positioningError: 'GPSHPositioningError',
+      dilutionOfPrecision: 'GPSDOP',
+    };
     console.time('getExif');
-    return getExif(image)
-      .then(({ latitude, latitudeRef, longitude, longitudeRef, datetime }) => {
+    return getExif(image, tags)
+      .then(({ latitude, latitudeRef, longitude, longitudeRef, datetime,
+        positioningError, dilutionOfPrecision }) => {
         console.timeEnd('getExif');
-        const ddLatitude = latitude
-          ? ConvertDMSToDD(...latitude.map(n => n.valueOf()), latitudeRef)
-          : null;
-        const ddLongitude = longitude
-          ? ConvertDMSToDD(...longitude.map(n => n.valueOf()), longitudeRef)
-          : null;
+        const ddLatitude = ConvertDMSToDD(...latitude, latitudeRef);
+        const ddLongitude = ConvertDMSToDD(...longitude, longitudeRef);
         const datetimeString = datetime
           ? formatDate(datetime)
           : null;
-        // if (latitude)
-        const metadata = {
+        const accuracy = positioningError || dilutionOfPrecision;
+        dispatch('saveLocation', {
           latitude: ddLatitude,
           longitude: ddLongitude,
-          datetime: datetimeString,
+          accuracy,
           obsId,
-        };
-        commit('HYDRATE_IMAGE', metadata);
-        return metadata;
+        });
+        commit(types.SET_DATETIME, { datetime: datetimeString, obsId });
       }).catch((error) => {
         console.log(error);
       });
@@ -102,15 +111,8 @@ const actions = {
     commit('SET_ACTIVE_DRAFT', { obsId });
   },
   setExtraInfo ({ commit }, { code, obsId }) {
-    console.log(code, obsId);
     commit('SET_EXTRA_CODE', { code, obsId });
   },
-  // async uploadObservation ({ state }, { observation }) {
-  //   debugger;
-  //   const jwt = state.jwt.value;
-  //   const uploadResponse = await uploadObservation(observation, jwt);
-  //   console.log(uploadResponse);
-  // },
 };
 
 // mutations
@@ -124,6 +126,7 @@ const mutations = {
         commonName: undefined,
         scientificName: undefined,
       },
+      position: {},
     };
     state.drafts.push(observation);
   },
@@ -133,7 +136,6 @@ const mutations = {
   },
   [types.SELECT_SPECIE] (state, { specie, obsId }) {
     const observation = state.drafts.find(obs => obs.id === obsId);
-    // debugger;
     observation.taxonomy.taxonId = specie.TAXON_ID;
     observation.taxonomy.commonName = specie.COMMON_NAME
       ? specie.COMMON_NAME
@@ -142,25 +144,24 @@ const mutations = {
       ? specie.SCIENTIFIC_NAME
       : undefined;
   },
-  [types.HYDRATE_IMAGE] (state, { latitude, longitude, datetime, obsId }) {
+  [types.SET_DATETIME] (state, { datetime, obsId }) {
     const observation = state.drafts.find(obs => obs.id === obsId);
     Vue.set(observation, 'datetime', datetime);
-    Vue.set(observation, 'position', {
-      latitude,
-      longitude,
-    });
   },
   [types.SET_ACTIVE_DRAFT] (state, { obsId }) {
-    console.log(obsId);
     Vue.set(state, 'activeDraftId', obsId);
   },
-  [types.SAVE_LOCATION] (state, { latitude, longitude, accuracy = 10, obsId }) {
+  [types.SAVE_LOCATION] (state, { latitude, longitude, accuracy, obsId }) {
     const observation = state.drafts.find(obs => obs.id === obsId);
     Vue.set(observation, 'position', {
       latitude,
       longitude,
       accuracy,
     });
+  },
+  [types.SAVE_LOCATION_DESCRIPTION] (state, { description, obsId }) {
+    const observation = state.drafts.find(obs => obs.id === obsId);
+    Vue.set(observation.position, 'description', description);
   },
   [types.SET_COUNT] (state, { count, obsId }) {
     const observation = state.drafts.find(obs => obs.id === obsId);

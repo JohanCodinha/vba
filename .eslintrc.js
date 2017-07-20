@@ -46,5 +46,6 @@ module.exports = {
     'no-mixed-operators': 0,
     // space after function name
     'space-before-function-paren': ["error", "always"],
+    'no-confusing-arrow': 0,
   }
 }

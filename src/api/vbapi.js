@@ -11,6 +11,7 @@ export const login = (username, password) => axios
   .catch(error => console.log(error.message));
 
 export const postObservation = (formData, jwt) => {
+  console.log(formData);
   return axios.post(`${apiUrl}/record`, formData, {
     headers: { 'x-access-token': jwt },
   });

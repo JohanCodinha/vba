@@ -44,11 +44,7 @@ export default {
       }
       [...files].forEach((image) => {
         this.$store.dispatch('addImage', { image, obsId: this.obsId });
-        console.log(image, this, this.obsId);
-        this.hydrateImageMetadata({ image, obsId: this.obsId })
-          .then(({ latitude, longitude, datetime }) => {
-            console.log(latitude, longitude, datetime);
-          }).catch(err => console.log(err));
+        this.hydrateImageMetadata({ image, obsId: this.obsId });
       });
     },
   },

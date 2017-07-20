@@ -55,7 +55,6 @@ export default {
       set: function setter (code) {
         const obsId = this.obsId;
         this.$store.dispatch('setExtraInfo', { code, obsId });
-        console.log(code);
       },
     },
   },

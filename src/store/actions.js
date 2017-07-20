@@ -4,7 +4,7 @@ import { postObservation } from '@/api/vbapi';
 export const uploadObservation = async ({ state }, { observation }) => {
   const jwt = state.account.jwt.value;
   const images = observation.images;
-  const { latitude, longitude } = observation.position;
+  const { latitude, longitude, accuracy } = observation.position;
   const { commonName, scientificName, taxonId } = observation.taxonomy;
   const { count, extraInfoCode, datetime } = observation;
 
@@ -12,6 +12,7 @@ export const uploadObservation = async ({ state }, { observation }) => {
   images.forEach(image => formData.append('images', image));
   formData.append('latitude', latitude);
   formData.append('longitude', longitude);
+  formData.append('accuracy', accuracy);
   formData.append('commonName', commonName);
   formData.append('scientificName', scientificName);
   formData.append('taxonId', taxonId);
