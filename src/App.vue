@@ -10,6 +10,7 @@ export default {
   mounted: async function login () {
     const tokenFetched = await this.$store.dispatch('fetchToken', { username: 'codeforvic', password: 19910908 });
     console.log(`${tokenFetched ? 'login succesfull' : 'failled login'}`);
+    this.$store.dispatch('getGeneralObs');
   },
 };
 </script>

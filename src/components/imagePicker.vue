@@ -27,8 +27,8 @@ export default {
     };
   },
   props: {
-    obsId: {
-      type: Number,
+    observationId: {
+      type: [Number, String],
       default () { return undefined; },
     },
   },
@@ -50,8 +50,15 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'activeDraft',
+      'allitems',
     ]),
+    obsId () {
+      return Number(this.observationId);
+    },
+    activeDraft () {
+      const draft = this.allitems.find(item => item.id === this.obsId);
+      return draft;
+    },
     thumbnails () {
       const draftObservation = this.activeDraft;
       if (draftObservation) {

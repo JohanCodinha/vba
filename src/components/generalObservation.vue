@@ -1,8 +1,9 @@
 <template>
   <div class="general-observation">
     <h2>General Observation</h2>
-    <imagePicker :obsId="observationId"></imagePicker>
-    <div class="specie-picker" @click="navigateTo('SpeciePicker')">
+    <imagePicker :observationId="obsId"></imagePicker>
+    <router-link
+    :to="{ name: 'SpeciePicker', params : { observationId: obsId } }">
       <template v-if="taxonId">
         <p>{{commonName}}</p>
         <p>{{scientificName}}</p>
@@ -10,22 +11,23 @@
       <template v-else>
         <p>Search for species...</p>
       </template>
-    </div>
-    <!-- <speciePicker :obsId="observationId"></speciePicker> -->
-    <countPicker :obsId="observationId"></countPicker>
-    <extraInfo :obsId="observationId"></extraInfo>
+    </router-link>
+    <countPicker :obsId="obsId"></countPicker>
+    <extraInfo :obsId="obsId"></extraInfo>
     <textarea name="notes"
       rows="5">Notes ...</textarea>
-    <datePicker :obsId="observationId"></datePicker>
-    <div class="location-picker" @click="navigateTo('LocationPicker')">
+    <datePicker :obsId="obsId"></datePicker>
+    <router-link 
+    :to="{ name: 'LocationPicker', params : { observationId: obsId } }">
       <template v-if="coordinates">
-        <p>{{latitude}}</p>
-        <p>{{longitude}}</p>
+        <p>Lat: {{latitude}}</p>
+        <p>Long: {{longitude}}</p>
+        <p>{{locationDescription}}</p>
       </template>
       <template v-else>
         <p>Enter location :</p>
       </template>
-    </div>
+    </router-link>
   <button @click="upload">Upload</button>
   </div>
 </template>
@@ -44,23 +46,30 @@ export default {
     imagePicker,
     speciePicker,
     datePicker,
-    // locationPicker,
     countPicker,
     extraInfo,
   },
+  props: {
+    observationId: {
+      type: [Number, String],
+      default () { return undefined; },
+    },
+  },
   // data () {
   //   return {
+  //     obsId: Number(this.observationId),
   //   };
   // },
   computed: {
     ...mapGetters([
-      'allDrafts',
-      'activeDraft',
+      'allitems',
     ]),
-    observationId () {
-      return this.activeDraft
-        ? this.activeDraft.id
-        : null;
+    obsId () {
+      return Number(this.observationId);
+    },
+    activeDraft () {
+      const draft = this.allitems.find(item => item.id === this.obsId);
+      return draft;
     },
     taxonomy () {
       const draftObservation = this.activeDraft;
@@ -102,17 +111,17 @@ export default {
         ? this.coordinates.longitude
         : null;
     },
+    locationDescription () {
+      return this.activeDraft.position.description;
+    },
   },
   methods: {
     ...mapActions([
       'createObservation',
     ]),
-    async newObservation () {
-      const newObs = await this.createObservation();
-      return newObs;
-    },
     navigateTo (routeName) {
-      this.$router.push({ name: routeName, params: { obsId: this.observationId } });
+      debugger;
+      this.$router.push({ name: routeName, params: { obsId: this.obsId } });
     },
     upload () {
       console.log('uploading start');
@@ -120,11 +129,11 @@ export default {
     },
   },
   mounted: async function mountedEvent () {
-    const activeDraft = this.activeDraft;
-    if (!activeDraft) {
-      const obsId = await this.newObservation();
-      console.log(`new draft created ${obsId}`);
-      this.$store.dispatch('setActiveDraft', { obsId });
+    if (this.observationId === undefined) {
+      const observationId = await this.createObservation();
+      // this.obsId = newObsId;
+      console.log(`new draft created ${observationId}`);
+      this.$router.replace({ name: 'GeneralObs', params: { observationId } });
     }
   },
 };

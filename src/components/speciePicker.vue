@@ -24,13 +24,14 @@ export default {
   name: 'speciePicker',
   data () {
     return {
+      obsId: Number(this.observationId),
       species: [],
       selection: undefined,
     };
   },
   props: {
-    obsId: {
-      type: Number,
+    observationId: {
+      type: [Number, String],
       default () { return undefined; },
     },
   },

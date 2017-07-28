@@ -1,28 +1,24 @@
 <template>
   <div class="location-picker">
-  <div id="map" class="mapboxgl-map">
-    <div class="location-display">
-      <a href="#" @click="$router.go(-1)">⬅</a>
-      <div>
-        <p>latitude: {{markerLatitude}}</p>
-        <p>longitude: {{markerLongitude}}</p>
-        <p>Accuracy: {{coordinates.accuracy}} m</p>
-        <p>Location: {{locationName}}</p>
+    <div id="map" class="mapboxgl-map">
+      <div class="location-display">
+        <a href="#" @click="$router.go(-1)">⬅</a>
+        <div>
+          <p>latitude: {{markerLatitude}}</p>
+          <p>longitude: {{markerLongitude}}</p>
+          <p>Accuracy: {{accuracy}} m</p>
+          <p>Location: {{locationName}}</p>
+        </div>
       </div>
-    </div>
-    <img class="center-marker" :style="{ left: markerLeft, top: markerTop}" src="https://image.flaticon.com/icons/png/128/8/8168.png">
-    <div v-show="showButton" class="validate-location actions">
-      <button class="action-button" @click="pickLocation">
-        {{buttonMessage}}
-      </button>
-      <button v-show="coordinates" class="action-button" @click="revertLocation">
-        revert
-      </button>
-    </div>
-  </div>
-    <div v-if="coordinates">
-      <p>{{coordinates.latitude}}</p>
-      <p>{{coordinates.longitude}}</p>
+      <img class="center-marker" :style="{ left: markerLeft, top: markerTop}" src="https://image.flaticon.com/icons/png/128/8/8168.png">
+      <div v-show="showButton" class="validate-location actions">
+        <button class="action-button" @click="pickLocation">
+          {{buttonMessage}}
+        </button>
+        <button v-show="coordinates" class="action-button" @click="revertLocation">
+          revert
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -36,6 +32,7 @@ export default {
   name: 'locationPicker',
   data () {
     return {
+      obsId: Number(this.observationId),
       centerMarker: {
         x: null,
         y: null,
@@ -49,15 +46,19 @@ export default {
     };
   },
   props: {
-    obsId: {
-      type: Number,
+    observationId: {
+      type: [Number, String],
       default () { return undefined; },
     },
   },
   computed: {
     ...mapGetters([
-      'activeDraft',
+      'allitems',
     ]),
+    activeDraft () {
+      const draft = this.allitems.find(item => item.id === this.obsId);
+      return draft;
+    },
     locationName () {
       return this.activeDraft.position.description;
     },
@@ -76,6 +77,11 @@ export default {
       return this.coordinates
         ? this.coordinates.longitude
         : null;
+    },
+    accuracy () {
+      return this.coordinates
+        ? this.coordinates.accuracy
+        : undefined;
     },
     markerLongitude () {
       const value = this.mapCenter.lng || this.longitude;
@@ -112,7 +118,6 @@ export default {
   },
   methods: {
     ...mapActions([
-      'selectSpecie',
     ]),
     pickLocation () {
       const location = this.$data.mapCenter;

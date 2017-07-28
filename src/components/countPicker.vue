@@ -24,9 +24,12 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'allDrafts',
-      'activeDraft',
+      'allitems',
     ]),
+    activeDraft () {
+      const draft = this.allitems.find(item => item.id === this.obsId);
+      return draft;
+    },
     count: {
       get: function getter () {
         if (!this.activeDraft) return null;

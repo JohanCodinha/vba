@@ -1,7 +1,7 @@
 <template>
   <div class="extra-info">
-    <label for="count">Extra information:</label>
-    <select name="extra-info" v-model="selected">
+    <label for="extra-info">Extra information:</label>
+    <select name="extra-info" id="extra-info" v-model="selected">
       <option v-for="option in options"
         :value="option.value">{{ option.text }}</option>
     </select>
@@ -9,9 +9,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
-import vbaSpecies from '../api/vbaSpecies';
-
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'extraInfo',
@@ -33,7 +31,6 @@ export default {
         { text: 'Sub fossil', value: 's' },
         { text: 'Voucher specimen', value: 'v' },
       ],
-      // selected: null,
     };
   },
   props: {
@@ -44,38 +41,20 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'allDrafts',
-      'activeDraft',
+      'allitems',
     ]),
+    activeDraft () {
+      const draft = this.allitems.find(item => item.id === this.obsId);
+      return draft;
+    },
     selected: {
       get: function getter () {
         if (!this.activeDraft) return null;
         return this.activeDraft.extraInfoCode;
       },
       set: function setter (code) {
-        const obsId = this.obsId;
-        this.$store.dispatch('setExtraInfo', { code, obsId });
+        this.$store.dispatch('setExtraInfo', { code, obsId: this.obsId });
       },
-    },
-  },
-  methods: {
-    ...mapActions([
-      'addCount',
-    ]),
-    searchSpecie (e) {
-      const input = e.target.value;
-      console.log(e.target.value);
-      vbaSpecies(input)
-        .then((response) => {
-          console.log(response);
-          this.$data.species = response;
-        });
-    },
-    select (specie) {
-      const obsId = this.obsId;
-      console.log(specie, obsId);
-      this.$store.dispatch('selectSpecie', { specie, obsId });
-      this.$data.selection = specie;
     },
   },
 };

@@ -27,8 +27,8 @@ const actions = {
   async fetchToken ({ commit }, { username, password }) {
     try {
       const { jwt, userUid, displayName } = await login(username, password);
-      commit('SAVE_TOKEN', jwt);
-      commit('SAVE_USER_INFO', { userUid, displayName });
+      commit(types.SAVE_TOKEN, jwt);
+      commit(types.SAVE_USER_INFO, { userUid, displayName });
       return true;
     } catch (error) {
       console.log(error);

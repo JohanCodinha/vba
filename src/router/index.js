@@ -17,25 +17,28 @@ export default new Router({
       component: Hello,
     },
     {
-      path: '/img',
+      path: '/img/:observationId',
       name: 'ImagePicker',
       component: imgagePicker,
     },
     {
-      path: '/search',
+      path: '/search/:observationId',
       name: 'SpeciePicker',
       component: speciePicker,
       props: true,
     },
     {
-      path: '/location',
+      path: '/location/:observationId',
       name: 'LocationPicker',
       component: locationPicker,
+      props: true,
+
     },
     {
-      path: '/generalObs',
+      path: '/generalObs/:observationId?',
       name: 'GeneralObs',
       component: generalObservation,
+      props: true,
     },
   ],
 });
