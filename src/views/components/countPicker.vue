@@ -7,8 +7,6 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import vbaSpecies from '../api/vbaSpecies';
-
 
 export default {
   name: 'countPicker',
@@ -51,21 +49,6 @@ export default {
     ...mapActions([
       'addCount',
     ]),
-    searchSpecie (e) {
-      const input = e.target.value;
-      console.log(e.target.value);
-      vbaSpecies(input)
-        .then((response) => {
-          console.log(response);
-          this.$data.species = response;
-        });
-    },
-    select (specie) {
-      const obsId = this.obsId;
-      console.log(specie, obsId);
-      this.$store.dispatch('selectSpecie', { specie, obsId });
-      this.$data.selection = specie;
-    },
   },
 };
 </script>

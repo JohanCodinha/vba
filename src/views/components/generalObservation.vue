@@ -33,12 +33,12 @@
 </template>
 
 <script>
-import imagePicker from '@/components/imagePicker';
-import speciePicker from '@/components/speciePicker';
-import datePicker from '@/components/datePicker';
-import countPicker from '@/components/countPicker';
-import extraInfo from '@/components/extraInfo';
 import { mapActions, mapGetters } from 'vuex';
+import imagePicker from './imagePicker';
+import speciePicker from './speciePicker';
+import datePicker from './datePicker';
+import countPicker from './countPicker';
+import extraInfo from './extraInfo';
 
 export default {
   name: 'generalObservation',

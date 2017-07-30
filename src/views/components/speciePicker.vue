@@ -17,7 +17,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import vbaSpecies from '../api/vbaSpecies';
+import vbaSpecies from '@/api/vbaSpecies';
 
 
 export default {

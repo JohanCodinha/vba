@@ -1,10 +1,10 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Hello from '@/components/Hello';
-import imgagePicker from '@/components/imagePicker';
-import speciePicker from '@/components/speciePicker';
-import generalObservation from '@/components/generalObservation';
-import locationPicker from '@/components/locationPicker';
+import Hello from '@/views/obsList/obsList';
+import imgagePicker from '@/views/components/imagePicker';
+import speciePicker from '@/views/components/speciePicker';
+import generalObservation from '@/views/components/generalObservation';
+import locationPicker from '@/views/components/locationPicker';
 
 Vue.use(Router);
 
