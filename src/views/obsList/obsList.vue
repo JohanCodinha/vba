@@ -3,32 +3,40 @@
     <button @click='newObservation'>new Obs</button>
     <h1>Drafts</h1>
     <ul>
-      <li v-for="obs in observations"
-        @click='editObservation(obs.id)'>
-        <p>{{obs.taxonomy.commonName || 'unamed'}}</p>
-        <p>is uploaded : {{(obs.recordedId !== undefined) ? 'true': 'false'}}</p>
-      </li>
+      <draft-observation-card v-for="obs in observations"
+        @click='editObservation(obs.id)'
+        :specieName="obs.taxonomy.commonName"
+        :siteName="obs.position.description"
+        :status="obs.recordedId === undefined ? 'Local draft': 'Uploaded'">
+      </draft-observation-card>
+
     </ul>
     <h2>Saved Obs</h2>
     <ul>
-      <li v-for="record in generalObs">
-      <p>site name: {{record.siteNme}}</p>
-      <p>survey ID: {{record.surveyId}}</p>
-      <button @click='deleteRecord(record.surveyId)'>delete</button>
-      </li>
+      <observation-card v-for="record in generalObs"
+        :siteName="record.siteNme"
+        :surveyId="record.surveyId"
+        :status="record.expertReviewStatusCde"
+        :key="record.surveyId"></observation-card>
     </ul>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import observationCard from './obsCard';
+import draftObservationCard from './draftObsCard';
 
 export default {
-  name: 'hello',
+  name: 'observations-list',
   data () {
     return {
       msg: 'Welcome to VBAS',
     };
+  },
+  components: {
+    'observation-card': observationCard,
+    'draft-observation-card': draftObservationCard,
   },
   computed: {
     ...mapGetters({
@@ -42,8 +50,6 @@ export default {
     ...mapActions([
     ]),
     async newObservation () {
-      // const obsId = await this.$store.dispatch('createObservation');
-      // console.log(`new obs id ${obsId} of type ${typeof obsId}`);
       this.$router.push({ name: 'GeneralObs' });
     },
     editObservation (obsId) {

@@ -1,7 +1,12 @@
 /* eslint-disable no-shadow */
 import Vue from 'vue';
-import { getGeneralObservation, deleteSurvey } from '@/api/vbapi';
-import { SAVE_GENERAL_OBS, DELETE_SURVEY } from '../mutations-types';
+import {
+  getGeneralObservation,
+  deleteSurvey,
+  getMethods,
+  getMethodsSpecies,
+  getSpeciesMedia } from '@/api/vbapi';
+import { SAVE_GENERAL_OBS, DELETE_SURVEY, SAVE_SPECIES } from '../mutations-types';
 
 // initial state
 const state = {
@@ -25,6 +30,25 @@ const actions = {
     }
   },
 
+  async getSurveySpecies ({ rootState, commit }, surveyId) {
+    try {
+      const jwt = rootState.account.jwt.value;
+      const { methods } = await getMethods(surveyId, jwt);
+      const methodsSpecies = await Promise.all(
+        methods.map(method => getMethodsSpecies(method.componentId, jwt)),
+      );
+      const species = methodsSpecies
+        .reduce((accu, value) => [...accu, ...value.species], []);
+      const speciesMedia = await Promise.all(
+        species.map(specie => getSpeciesMedia(specie.id, jwt)),
+      );
+      const hydratedSpecies = species.map((specie, index) => Object.assign(
+        {}, specie, speciesMedia[index]));
+      commit(SAVE_SPECIES, { surveyId, species: hydratedSpecies });
+    } catch (error) {
+      console.log(error);
+    }
+  },
   async deleteSurvey ({ rootState, commit }, surveyId) {
     try {
       const jwt = rootState.account.jwt.value;
@@ -44,6 +68,10 @@ const mutations = {
   [DELETE_SURVEY] (state, surveyId) {
     const newState = state.general.filter(record => record.surveyId !== surveyId);
     Vue.set(state, 'general', newState);
+  },
+  [SAVE_SPECIES] (state, { surveyId, species }) {
+    const survey = state.general.find(obs => obs.surveyId === surveyId);
+    Vue.set(survey, 'species', species);
   },
 };
 

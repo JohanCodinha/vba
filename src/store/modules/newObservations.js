@@ -102,6 +102,10 @@ const actions = {
     commit(types.CREATE_OBSERVATION, id);
     return id;
   },
+  deleteObservation ({ commit }, obsId) {
+    commit('DELETE_OBSERVATION', obsId);
+  },
+
   async uploadObservation ({ rootState, commit }, { observation }) {
     const jwt = rootState.account.jwt.value;
     const { userUid, displayName } = rootState.account;
@@ -170,6 +174,11 @@ const mutations = {
       },
     };
     state.items.push(observation);
+  },
+  [types.DELETE_OBSERVATION] (state, obsId) {
+    const observationIndex = state.items.findIndex(obs => obs.id !== obsId);
+    // Vue.set(state, 'items', itemsWithoutObs);
+    state.items.splice(observationIndex, 1);
   },
   [types.SAVE_IMAGE] (state, { image, obsId }) {
     const observation = state.items.find(obs => obs.id === obsId);

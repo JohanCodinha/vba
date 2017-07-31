@@ -28,3 +28,24 @@ export const getGeneralObservation = jwt => axios
   })
   .then(res => res.data)
   .catch(error => console.log(error.message));
+
+export const getMethods = (surveyId, jwt) => axios
+  .get(`${apiUrl}/surveys/${surveyId}/methods`, {
+    headers: { 'x-access-token': jwt },
+  })
+  .then(res => res.data)
+  .catch(error => console.log(error.message));
+
+export const getMethodsSpecies = (methodId, jwt) => axios
+  .get(`${apiUrl}/methods/${methodId}/species`, {
+    headers: { 'x-access-token': jwt },
+  })
+  .then(res => res.data)
+  .catch(error => console.log(error.message));
+
+export const getSpeciesMedia = (specieId, jwt) => axios
+  .get(`${apiUrl}/species/${specieId}/media`, {
+    headers: { 'x-access-token': jwt },
+  })
+  .then(res => res.data)
+  .catch(error => console.log(error.message));

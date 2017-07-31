@@ -11,4 +11,3 @@ export const reverseGeocoding = (longitude, latitude) => {
     .then(response => response.data);
 };
 
-// https://api.mapbox.com/geocoding/v5/mapbox.places/145.13034%20%2C%20-38.51631.json?access_token=pk.eyJ1IjoicGFuZWx2dyIsImEiOiJjaW56cmlxaTcxOTk1dTJtM3F2aGE3Y25mIn0.bKj9LERNGK-5royXLrqthg

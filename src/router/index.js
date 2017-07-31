@@ -1,10 +1,11 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Hello from '@/views/obsList/obsList';
+import obsList from '@/views/obsList/obsList';
 import imgagePicker from '@/views/components/imagePicker';
 import speciePicker from '@/views/components/speciePicker';
 import generalObservation from '@/views/components/generalObservation';
 import locationPicker from '@/views/components/locationPicker';
+import survey from '@/views/survey/survey';
 
 Vue.use(Router);
 
@@ -13,8 +14,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Hello',
-      component: Hello,
+      name: 'obsList',
+      component: obsList,
     },
     {
       path: '/img/:observationId',
@@ -38,6 +39,12 @@ export default new Router({
       path: '/generalObs/:observationId?',
       name: 'GeneralObs',
       component: generalObservation,
+      props: true,
+    },
+    {
+      path: '/survey/:surveyId',
+      name: 'survey',
+      component: survey,
       props: true,
     },
   ],
