@@ -15,7 +15,7 @@
           </template>
         </router-link>
         <countPicker :obsId="obsId"></countPicker>
-        <extraInfo :obsId="obsId"></extraInfo>
+        <extraInfo :obsId="obsId"></extraInfo>  
         <div class="input-field">
           <textarea class="materialize-textarea" name="notes"
           >Notes ...</textarea>
@@ -141,7 +141,6 @@ export default {
       'createObservation',
     ]),
     navigateTo (routeName) {
-      debugger;
       this.$router.push({ name: routeName, params: { obsId: this.obsId } });
     },
     upload () {
