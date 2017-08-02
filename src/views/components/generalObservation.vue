@@ -1,34 +1,44 @@
 <template>
-  <div class="general-observation">
-    <h2>General Observation</h2>
-    <imagePicker :observationId="obsId"></imagePicker>
-    <router-link
-    :to="{ name: 'SpeciePicker', params : { observationId: obsId } }">
-      <template v-if="taxonId">
-        <p>{{commonName}}</p>
-        <p>{{scientificName}}</p>
-      </template>
-      <template v-else>
-        <p>Search for species...</p>
-      </template>
-    </router-link>
-    <countPicker :obsId="obsId"></countPicker>
-    <extraInfo :obsId="obsId"></extraInfo>
-    <textarea name="notes"
-      rows="5">Notes ...</textarea>
-    <datePicker :obsId="obsId"></datePicker>
-    <router-link 
-    :to="{ name: 'LocationPicker', params : { observationId: obsId } }">
-      <template v-if="coordinates">
-        <p>Lat: {{latitude}}</p>
-        <p>Long: {{longitude}}</p>
-        <p>{{locationDescription}}</p>
-      </template>
-      <template v-else>
-        <p>Enter location :</p>
-      </template>
-    </router-link>
-  <button @click="upload">Upload</button>
+  <div class="general-observation container">
+    <div class="card">
+      <div class="card-content">
+      <div class="card-title">General Observation</div>
+        <imagePicker :observationId="obsId"></imagePicker>
+        <router-link
+        :to="{ name: 'SpeciePicker', params : { observationId: obsId } }">
+          <template v-if="taxonId">
+            <p>{{commonName}}</p>
+            <p>{{scientificName}}</p>
+          </template>
+          <template v-else>
+            <p>Lookup Species</p>
+          </template>
+        </router-link>
+        <countPicker :obsId="obsId"></countPicker>
+        <extraInfo :obsId="obsId"></extraInfo>
+        <div class="input-field">
+          <textarea class="materialize-textarea" name="notes"
+          >Notes ...</textarea>
+        </div>
+        <datePicker :obsId="obsId"></datePicker>
+        <router-link 
+        :to="{ name: 'LocationPicker', params : { observationId: obsId } }">
+          <template v-if="coordinates">
+            <p>Lat: {{latitude}}</p>
+            <p>Long: {{longitude}}</p>
+            <p>{{locationDescription}}</p>
+          </template>
+          <template v-else>
+            <p>Enter location :</p>
+          </template>
+        </router-link>
+      <div class="center-align">
+        <button class="btn" 
+         @click="upload"
+          :disabled="obsIsValid">Upload</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -114,6 +124,17 @@ export default {
     locationDescription () {
       return this.activeDraft.position.description;
     },
+    obsIsValid () {
+      const draft = this.activeDraft;
+      if (!draft) return true;
+      if (draft.taxonomy.taxonId !== null
+        && draft.position.latitude !== null
+        && draft.position.longitude !== null
+        && draft.datetime !== null) {
+        return false;
+      }
+      return true;
+    },
   },
   methods: {
     ...mapActions([
@@ -141,21 +162,5 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
-}
 
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
-}
 </style>

@@ -1,14 +1,22 @@
 <template>
   <div class="speciePicker">
-    <input type="text" name="search"
-      :value="selection
-      ? selection.COMMON_NAME
-      : null"
-      placeholder="search ..." 
-      @change="searchSpecie">
-    <ul>
-      <li v-for="suggestion in species" @click="select(suggestion)">
-        <p>{{suggestion.COMMON_NAME}}</p>
+    <div class="card">
+      <div class="card-content">
+      <div class="input-content">
+        <label for="search">Search species</label>
+        <input type="text" name="search"
+          id="search"
+          :value="selection
+          ? selection.COMMON_NAME
+          : null"
+          @change="searchSpecie">
+      </div>
+      </div>
+    </div>
+    <ul class="collection">
+      <li class="collection-item"
+        v-for="suggestion in species" @click="select(suggestion)">
+        <h5>{{suggestion.COMMON_NAME}}</h5>
         <p>{{suggestion.SCIENTIFIC_NAME}}</p>
       </li>
     </ul>
@@ -60,7 +68,7 @@ export default {
 </script>
 
 <style scoped>
-h1, h2 {
+/*h1, h2 {
   font-weight: normal;
 }
 
@@ -84,5 +92,5 @@ li:hover {
 
 a {
   color: #42b983;
-}
+}*/
 </style>

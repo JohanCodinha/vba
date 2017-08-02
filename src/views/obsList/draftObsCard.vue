@@ -1,9 +1,29 @@
 <template>
-  <li>
-    <p>Specie Name: {{specieName}}</p>
-    <p>site name: {{siteName}}</p>
-    <p>status: {{status}}</p>
-    <button @click='deleteDraft'>delete</button>
+  <li class="card">
+  <div class="card-content">
+    <div class="card-data"
+      @click="$router.push({ name: 'GeneralObs', params: { observationId: obsId } })">
+      <p>{{specieName || 'Unidentified specie'}}</p>
+      <p>{{siteName || 'Unknown location'}}</p>
+      <p>Status: {{status}}</p>
+    </div>
+    <span class="activator">
+      <i class="material-icons activator">more_vert</i>
+    </span>
+    </div>
+    <div class="card-reveal">
+        <span class="card-title">
+          <i class="material-icons right">close</i>
+        </span>
+        <a class="waves-effect waves-light btn red darken-2"
+          @click='deleteRecord(surveyId)'>Delete
+          <!-- <i class="material-icons right">delete</i> -->
+        </a>
+        <a class="waves-effect waves-light btn"
+          @click='deleteRecord(surveyId)'>upload
+          <!-- <i class="material-icons right">cloud upload</i> -->
+        </a>
+      </div>
   </li>
 </template>
 
@@ -45,21 +65,23 @@ export default {
     deleteDraft () {
       this.$store.dispatch('deleteObservation', this.obsId);
     },
+    upload () {
+      console.log('uploading start');
+      this.$store.dispatch('uploadObservation', { observation: this.obsId });
+    },
   },
 };
 </script>
 
 <style scoped>
-h1, h2 {
-  font-weight: normal;
+.card-data {
+  display: flex;
+  flex-direction: column;
 }
 
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
+.card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 </style>

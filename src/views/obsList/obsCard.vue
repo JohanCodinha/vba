@@ -1,11 +1,28 @@
 <template>
-  <li>
-  <router-link :to="{ name: 'survey', params: { surveyId: this.surveyId } }">
-    <p>site name: {{siteName}}</p>
-    <p>survey ID: {{surveyId}}</p>
-    <p>status: {{status}}</p>
-    <button @click='deleteRecord(surveyId)'>delete</button>
-  </router-link>
+  <li class="card">
+    <div class="card-content">
+      <div class="card-data"
+        @click="$router.push({ name: 'survey', params: { surveyId } })">
+            <p>site name: {{siteName}}</p>
+            <p>survey ID: {{surveyId}}</p>
+            <p>status: {{status}}</p>
+      </div>
+      <!-- </router-link> -->
+      <span class="activator">
+        <i class="material-icons activator">more_vert</i>
+      </span>
+      </div>
+      <div class="card-reveal">
+        <span class="card-title">
+          <i class="material-icons right">close</i>
+        </span>
+        <a class="waves-effect waves-light btn red darken-2"
+          @click='deleteRecord(surveyId)'>Delete
+          <i class="material-icons right">delete</i>
+        </a>
+        <a class="waves-effect waves-light btn"
+          @click='deleteRecord(surveyId)'>Edit</a>
+      </div>
   </li>
 </template>
 
@@ -48,16 +65,15 @@ export default {
 </script>
 
 <style scoped>
-h1, h2 {
-  font-weight: normal;
+.card-data {
+  display: flex;
+  flex-direction: column;
 }
 
-li {
-  display: inline-block;
-  margin: 0 10px;
+.card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-a {
-  color: #42b983;
-}
 </style>

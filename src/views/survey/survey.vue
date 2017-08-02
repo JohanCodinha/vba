@@ -2,23 +2,27 @@
   <div>
     <p>Survey: {{this.surveyId}}</p>
     <ul>
-      <li v-for="specie in survey.species">
-        <p>{{specie.commonNme}}</p>
-        <p>{{specie.scientificNme}}</p>
-        <p>count: {{specie.totalCountInt}}</p>
-      </li>
+      <specie-card v-for="specie in species"
+        :commonName="specie.commonNme"
+        :scientificName="specie.scientificNme"
+        :count="specie.totalCountInt"
+        :imagesId="specie.images.map(i=>i.id)"></specie-card> 
     </ul>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import specieCard from './specieCard';
 
 export default {
   name: 'observation-card',
   data () {
     return {
     };
+  },
+  components: {
+    'specie-card': specieCard,
   },
   props: {
     surveyId: {
@@ -32,6 +36,9 @@ export default {
     }),
     survey () {
       return this.generalObs.find(obs => obs.surveyId === this.surveyId);
+    },
+    species () {
+      return this.survey.species;
     },
   },
   methods: {

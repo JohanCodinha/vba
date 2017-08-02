@@ -31,7 +31,7 @@ export default {
     count: {
       get: function getter () {
         if (!this.activeDraft) return null;
-        return this.activeDraft.count || 0;
+        return this.activeDraft.count || null;
       },
       set: function setter (value) {
         const count = Number(value);

@@ -172,6 +172,7 @@ const mutations = {
         latitude: null,
         longitude: null,
       },
+      datetime: null,
     };
     state.items.push(observation);
   },

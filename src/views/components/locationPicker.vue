@@ -125,7 +125,7 @@ export default {
       const { lat: latitude, lng: longitude } = location;
       this.$data.moved = false;
       this.$data.map.flyTo({ zoom: 12 });
-      this.$store.dispatch('saveLocation', { latitude, longitude, obsId });
+      this.$store.dispatch('saveLocation', { latitude, longitude, accuracy: 10, obsId });
     },
     revertLocation () {
       const center = [this.longitude, this.latitude];
