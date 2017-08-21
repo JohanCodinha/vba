@@ -2359,9 +2359,9 @@ evp_bytestokey@^1.0.0:
   dependencies:
     create-hash "^1.1.1"
 
-exif-js@^2.2.1:
+"exif-js@https://github.com/JohanCodinha/exif-js/tarball/master":
   version "2.2.1"
-  resolved "https://registry.yarnpkg.com/exif-js/-/exif-js-2.2.1.tgz#68589104759cafff97c396fafae4b428e87d2159"
+  resolved "https://github.com/JohanCodinha/exif-js/tarball/master#6a814f83ef8d07e9acbdcb1b6fcb0e65c5308da1"
 
 expand-braces@^0.1.1:
   version "0.1.2"
