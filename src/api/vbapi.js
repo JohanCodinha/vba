@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const apiUrl = 'https://vbapi.herokuapp.com';// 'http://localhost:3000'; // 'https://vbapi.herokuapp.com';
+const apiUrl = 'http://54.66.166.195/vbapi';// 'http://localhost:3000'; // 'https://vbapi.herokuapp.com';
 
 export const login = (username, password) => axios
   .post(`${apiUrl}/auth`, {

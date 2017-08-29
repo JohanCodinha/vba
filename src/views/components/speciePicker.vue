@@ -7,17 +7,27 @@
         <input type="text" name="search"
           id="search"
           :value="selection
-          ? selection.COMMON_NAME
+          ? selection.commonName
           : null"
           @change="searchSpecie">
       </div>
       </div>
     </div>
     <ul class="collection">
-      <li class="collection-item"
+      <li class="collection-item taxon-card"
         v-for="suggestion in species" @click="select(suggestion)">
-        <h5>{{suggestion.COMMON_NAME}}</h5>
-        <p>{{suggestion.SCIENTIFIC_NAME}}</p>
+        <div class="taxonomy">
+          <h5>{{suggestion.commonName}}</h5>
+          <p>{{suggestion.scientificName}}</p>
+        </div>
+        <div class="description">
+          <img class="thumbnail" v-if="suggestion.images[0]"
+            :src="suggestion.images[0].s3Url">
+          <img class="info-svg"
+            :style="{ visibility: (suggestion.description || suggestion.images[0])
+              ? 'visible' : 'hidden'}"
+            src="../../assets/ic_info_outline_black_24px.svg">
+        </div>
       </li>
     </ul>
   </div>
@@ -68,6 +78,29 @@ export default {
 </script>
 
 <style scoped>
+.thumbnail {
+  max-width: 10rem;
+}
+
+.description {
+  width: 12rem;
+}
+
+.taxon-card {
+  display: flex;
+  justify-content: space-between;
+}
+
+.description {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.info-svg {
+  margin-left: auto;
+}
+
 /*h1, h2 {
   font-weight: normal;
 }

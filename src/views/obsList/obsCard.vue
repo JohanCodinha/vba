@@ -9,7 +9,7 @@
       </div>
       <!-- </router-link> -->
       <span class="activator">
-        <i class="material-icons activator">more_vert</i>
+        <i class="material-icons activator">more_vert3</i>
       </span>
       </div>
       <div class="card-reveal">
@@ -21,7 +21,7 @@
           <i class="material-icons right">delete</i>
         </a>
         <a class="waves-effect waves-light btn"
-          @click='deleteRecord(surveyId)'>Edit</a>
+          @click=''>Edit</a>
       </div>
   </li>
 </template>

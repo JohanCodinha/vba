@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-const apiUrl = 'https://vbaspecies.herokuapp.com';
+const apiUrl = 'http://54.66.166.195/api';
 
 const searchSpecies = query => axios
-  .get(`${apiUrl}/species/search`, {
+  .get(`${apiUrl}/search`, {
     params: {
-      q: query,
+      query,
     },
   })
   .then(res => res.data)

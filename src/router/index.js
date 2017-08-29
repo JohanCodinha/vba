@@ -6,12 +6,18 @@ import speciePicker from '@/views/components/speciePicker';
 import generalObservation from '@/views/components/generalObservation';
 import locationPicker from '@/views/components/locationPicker';
 import survey from '@/views/survey/survey';
+import login from '@/views/login/login';
 
 Vue.use(Router);
 
 export default new Router({
   mode: 'history',
   routes: [
+    {
+      path: '/login',
+      name: 'login',
+      component: login,
+    },
     {
       path: '/',
       name: 'obsList',

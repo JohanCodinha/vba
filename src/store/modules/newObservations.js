@@ -187,12 +187,12 @@ const mutations = {
   },
   [types.SELECT_SPECIE] (state, { specie, obsId }) {
     const observation = state.items.find(obs => obs.id === obsId);
-    observation.taxonomy.taxonId = specie.TAXON_ID;
-    observation.taxonomy.commonName = specie.COMMON_NAME
-      ? specie.COMMON_NAME
+    observation.taxonomy.taxonId = specie.taxonId;
+    observation.taxonomy.commonName = specie.commonName
+      ? specie.commonName
       : null;
-    observation.taxonomy.scientificName = specie.SCIENTIFIC_NAME
-      ? specie.SCIENTIFIC_NAME
+    observation.taxonomy.scientificName = specie.scientificName
+      ? specie.scientificName
       : null;
   },
   [types.SET_DATETIME] (state, { datetime, obsId }) {
