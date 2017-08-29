@@ -1,36 +1,33 @@
 <template>
-  <li class="card">
-    <div class="card-content">
-      <div class="card-data"
-        @click="$router.push({ name: 'survey', params: { surveyId } })">
-            <p>site name: {{siteName}}</p>
-            <p>survey ID: {{surveyId}}</p>
-            <p>status: {{status}}</p>
-      </div>
-      <!-- </router-link> -->
-      <span class="activator">
-        <i class="material-icons activator">more_vert3</i>
-      </span>
-      </div>
-      <div class="card-reveal">
-        <span class="card-title">
-          <i class="material-icons right">close</i>
-        </span>
-        <a class="waves-effect waves-light btn red darken-2"
-          @click='deleteRecord(surveyId)'>Delete
-          <i class="material-icons right">delete</i>
-        </a>
-        <a class="waves-effect waves-light btn"
-          @click=''>Edit</a>
-      </div>
-  </li>
+  <card>
+    <dl slot="content"
+      @click="$router.push({ name: 'survey', params: { surveyId } })">
+      <dt>site name</dt>
+      <dd>{{siteName}}</dd>
+      <dt>survey ID</dt>
+      <dd>{{surveyId}}</dd>
+      <dt>status</dt>
+      <dd>{{status}}</dd>
+    </dl>
+    <div slot="reveal">
+      <a class="btn_ red_"
+        @click='deleteRecord(surveyId)'>Delete
+        <!-- <i class="material-icons right">delete</i> -->
+      </a>
+      <a class="btn_"
+        @click=''>Edit</a>
+    </div>
+  </card>
 </template>
 
 <script>
-// import { mapGetters, mapActions } from 'vuex';
+import card from '@/views/components/card';
 
 export default {
   name: 'observation-card',
+  components: {
+    card,
+  },
   data () {
     return {
     };
@@ -65,15 +62,5 @@ export default {
 </script>
 
 <style scoped>
-.card-data {
-  display: flex;
-  flex-direction: column;
-}
-
-.card-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
 
 </style>
