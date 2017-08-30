@@ -18,7 +18,7 @@
         <extraInfo :obsId="obsId"></extraInfo>  
         <div class="input-field">
           <textarea class="materialize-textarea" name="notes"
-          >Notes ...</textarea>
+            placeholder="Notes ..."></textarea>
         </div>
         <datePicker :obsId="obsId"></datePicker>
         <router-link 

@@ -11,7 +11,9 @@
         :obsId="obs.id"
         :specieName="obs.taxonomy.commonName"
         :siteName="obs.position.description"
+        :image="obs.images[0]"
         :status="obs.recordedId === undefined ? 'Local draft': 'Uploaded'">
+
       </draft-observation-card>
 
     </ul>

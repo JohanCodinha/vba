@@ -1,33 +1,32 @@
 <template>
-  <li class="card">
-    <div class="card-content_">
-      <dl @click="$router.push({ name: 'GeneralObs', params: { observationId: obsId } })">
+  <card>
+    <img v-if="imageUrl" slot="image" :src="imageUrl">
+    <dl slot="content"
+      @click="$router.push({ name: 'GeneralObs', params: { observationId: obsId } })">
+        <dt>Specie</dt>
         <dd>{{specieName || 'Unidentified specie'}}</dd>
+        <dt>Site name</dt>
         <dd>{{siteName || 'Unknown location'}}</dd>
-        <dt>Status :</dt>
+        <dt>Status</dt>
         <dd>{{status}}</dd>
-      </dl>
-      <a href="#">
-        <i @click="cardReveal" class="material-icons">more_vert</i>
-      </a>
+    </dl>
+    <div slot="reveal">
+      <a class="btn_ red_" @click='deleteDraft'>Delete </a>
+      <a class="btn_" @click=''>upload </a>
     </div>
-    <div class="card-reveal_" v-bind:class="{'card-revealed': cardRevealed}">
-      <div>
-        <a class="btn_ red_" @click='deleteRecord(surveyId)'>Delete </a>
-        <a class="btn_" @click=''>upload </a>
-      </div>
-      <a href="#">
-        <i @click="cardHide" class="material-icons">close</i>
-      </a>
-    </div>
-  </li>
+  </card>
 </template>
 
 <script>
+import card from '@/views/components/card';
+
 // import { mapGetters, mapActions } from 'vuex';
 
 export default {
-  name: 'observation-card',
+  name: 'draft-observation-card',
+  components: {
+    card,
+  },
   data () {
     return {
       cardRevealed: false,
@@ -50,11 +49,16 @@ export default {
       type: Number,
       default () { return undefined; },
     },
+    image: {},
   },
   computed: {
     // ...mapGetters({
     //   generalObs: 'general',
     // }),
+    imageUrl () {
+      if (this.image) return URL.createObjectURL(this.image);
+      return null;
+    },
   },
   methods: {
     // ...mapActions([
@@ -66,64 +70,10 @@ export default {
       console.log('uploading start');
       this.$store.dispatch('uploadObservation', { observation: this.obsId });
     },
-    cardReveal () {
-      this.$data.cardRevealed = true;
-      console.log(this.$data.cardRevealed);
-    },
-    cardHide () {
-      this.$data.cardRevealed = false;
-      console.log(this.$data.cardRevealed);
-    },
   },
 };
 </script>
 
 <style scoped>
-.card {
-  overflow: hidden;
-}
 
-.card-content_ {
-  padding: 1.5rem;
-  display: flex;
-  flex-grow: 1;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.card-reveal_ {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.5rem;
-  position: absolute;
-  background-color: #fff;
-  width: 100%;
-  height: 100%;
-  top: 100%;
-  transition: transform .3s;
-}
-
-.card-revealed {
-  transform: translateY(-100%);
-}
-
-.btn_ {
-  text-decoration: none;
-  color: #fff;
-  background-color: #26a69a;
-  text-align: center;
-  letter-spacing: .5px;
-  border: none;
-  border-radius: 2px;
-  display: inline-block;
-  height: 36px;
-  line-height: 36px;
-  padding: 0 2rem;
-  text-transform: uppercase;
-}
-
-.red_ {
-  background-color: #D32F2F;
-}
 </style>

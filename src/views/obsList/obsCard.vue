@@ -2,11 +2,11 @@
   <card>
     <dl slot="content"
       @click="$router.push({ name: 'survey', params: { surveyId } })">
-      <dt>site name</dt>
+      <dt>Site name</dt>
       <dd>{{siteName}}</dd>
-      <dt>survey ID</dt>
+      <dt>Survey ID</dt>
       <dd>{{surveyId}}</dd>
-      <dt>status</dt>
+      <dt>Status</dt>
       <dd>{{status}}</dd>
     </dl>
     <div slot="reveal">
