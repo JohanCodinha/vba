@@ -69,11 +69,11 @@ export default {
 </script>
 
 <style scoped>
-.fixed-action-btn {
+/*.fixed-action-btn {
     position: fixed;
     right: 23px;
     bottom: 23px;
-}
+}*/
 /*h1, h2 {
   font-weight: normal;
 }

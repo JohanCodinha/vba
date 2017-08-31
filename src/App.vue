@@ -12,12 +12,14 @@
                 :class="{
                   'menu-burger-inner-active': slideoutOpen,
                   'menu-burger-inner-active': slideoutOpen,
-                  }"></div>
+                  }">
+              </div>
             </div>
           </a>
         </div>
       </header>
-      <router-view></router-view>
+      <router-view class="app-content"></router-view>
+      <bottomNav class="bottom-nav"></bottomNav>
     </div>
     <sidePanel :style="{ display: slideoutOpen ? 'block' : 'none' }"
       @closeMenu="menu"></sidePanel>
@@ -27,6 +29,7 @@
 
 <script>
 import sidePanel from './views/sidePanel';
+import bottomNav from './views/bottomNav';
 
 export default {
   name: 'index-component',
@@ -37,6 +40,7 @@ export default {
   },
   components: {
     sidePanel,
+    bottomNav,
   },
   methods: {
     menu () {
@@ -61,15 +65,16 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
+  height: 100%;
 }
 
 header {
   background-color: #201647;
-  height: 3.125rem;
+  min-height: 3.125rem;
   display: flex;
   align-items: center;
-      position: relative;
-    z-index: 10;
+  position: relative;
+  z-index: 10;
 }
 
 .header-menu-background {
@@ -166,14 +171,14 @@ header {
 
 .menu-burger-inner::before,
 .menu-burger-inner::after {
-    -webkit-transition: all 0.15s ease;
-    -moz-transition: all 0.15s ease;
-    transition: all 0.15s ease;
-    background: #201647;
-    content: '';
-    display: block;
-    height: 0.125rem;
-    position: absolute;
+  -webkit-transition: all 0.15s ease;
+  -moz-transition: all 0.15s ease;
+  transition: all 0.15s ease;
+  background: #201647;
+  content: '';
+  display: block;
+  height: 0.125rem;
+  position: absolute;
 }
 
 .logo img {
@@ -187,5 +192,20 @@ header {
 .main {
   position: relative;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  max-height: 100vh;
+  position: relative;
 }
+
+.app-content {
+  flex: 1;
+  overflow: auto;
+}
+.bottom-nav {
+  flex: 1 0 auto;
+  width: 100%;
+}
+
 </style>

@@ -45,12 +45,15 @@ export default {
 
 <style scoped>
 .card {
-  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
-      transition: box-shadow .25s, -webkit-box-shadow .25s;
-    border-radius: 2px;
-      position: relative;
-    margin: .5rem 0 1rem 0;
-    background-color: #fff;
+  box-shadow: 
+    0 2px 2px 0 rgba(0,0,0,0.14),
+    0 1px 5px 0 rgba(0,0,0,0.12),
+    0 3px 1px -2px rgba(0,0,0,0.2);
+  transition: box-shadow .25s, -webkit-box-shadow .25s;
+  border-radius: 2px;
+  position: relative;
+  margin: .5rem 0 1rem 0;
+  background-color: #fff;
   overflow: hidden;
 }
 
