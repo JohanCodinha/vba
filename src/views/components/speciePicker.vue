@@ -7,21 +7,30 @@
         v-model="searchInput">
     </div>
     <ul class="collection">
-      <li class="taxon-card"
+      <li v-for="suggestion in species">
+        <specieSearchItem
+          :commonName="suggestion.commonName"
+          :scientificName="suggestion.scientificName"
+          :conservationStatus="suggestion.conservationStatus.vicAdvisory"
+          :imageSource="get(suggestion, 'images[0].s3Url')"
+          @click.native="select(suggestion)"
+        ></specieSearchItem>
+      </li>
+      <!-- :imageLink="suggestion.images" -->
+      <!-- <li class="taxon-card"
         v-for="suggestion in species" @click="select(suggestion)">
+        <div class="description">
+          <img class="thumbnail" v-if="suggestion.images[0]"
+            :src="suggestion.images[0].s3Url">
+          <i :style="{ visibility: (suggestion.description || suggestion.images[0])
+              ? 'visible' : 'hidden'}"
+              class="material-icons">info_outline</i>
+        </div>
         <div class="taxonomy">
           <h5>{{suggestion.commonName}}</h5>
           <p>{{suggestion.scientificName}}</p>
         </div>
-        <div class="description">
-          <img class="thumbnail" v-if="suggestion.images[0]"
-            :src="suggestion.images[0].s3Url">
-          <img class="info-svg"
-            :style="{ visibility: (suggestion.description || suggestion.images[0])
-              ? 'visible' : 'hidden'}"
-            src="../../assets/ic_info_outline_black_24px.svg">
-        </div>
-      </li>
+      </li> -->
     </ul>
   </div>
 </template>
@@ -29,14 +38,15 @@
 <script>
 import { mapActions } from 'vuex';
 import vbaSpecies from '@/api/vbaSpecies';
-import { debounce } from 'lodash';
+import { debounce, get } from 'lodash'; // eslint-disable-line
+import specieSearchItem from './specieSearchItem';
 // import card from './card';
 
 
 export default {
   name: 'speciePicker',
   components: {
-    // card,
+    specieSearchItem,
   },
   data () {
     return {
@@ -73,6 +83,9 @@ export default {
       this.$store.dispatch('selectSpecie', { specie, obsId });
       this.$data.searchInput = specie;
       this.$router.go(-1);
+    },
+    get (object, path) {
+      return get(object, path);
     },
   },
 };
