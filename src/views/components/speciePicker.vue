@@ -4,10 +4,7 @@
       <label for="search">Search species :</label>
       <input type="text" name="search"
         id="search"
-        :value="selection
-        ? selection.commonName
-        : null"
-        @change="searchSpecie">
+        v-model="searchInput">
     </div>
     <ul class="collection">
       <li class="taxon-card"
@@ -32,6 +29,7 @@
 <script>
 import { mapActions } from 'vuex';
 import vbaSpecies from '@/api/vbaSpecies';
+import { debounce } from 'lodash';
 // import card from './card';
 
 
@@ -44,7 +42,7 @@ export default {
     return {
       obsId: Number(this.observationId),
       species: [],
-      selection: undefined,
+      searchInput: undefined,
     };
   },
   props: {
@@ -53,24 +51,27 @@ export default {
       default () { return undefined; },
     },
   },
+  watch: {
+    // eslint-disable-next-line
+    searchInput: function (inputString) { this.searchSpecie(inputString) },
+  },
   methods: {
     ...mapActions([
       'selectSpecie',
     ]),
-    searchSpecie (e) {
-      const input = e.target.value;
-      console.log(e.target.value);
-      vbaSpecies(input)
-        .then((response) => {
-          console.log(response);
-          this.$data.species = response;
-        });
-    },
+    // eslint-disable-next-line
+    searchSpecie: debounce(
+      function searchSpecie (inputString) {
+        vbaSpecies(inputString)
+          .then((response) => {
+            this.$data.species = response;
+          });
+      }, 500),
     select (specie) {
       const obsId = this.obsId;
       console.log(specie, obsId);
       this.$store.dispatch('selectSpecie', { specie, obsId });
-      this.$data.selection = specie;
+      this.$data.searchInput = specie;
       this.$router.go(-1);
     },
   },
