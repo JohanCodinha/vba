@@ -1,20 +1,16 @@
 <template>
   <div class="speciePicker">
-    <div class="card">
-      <div class="card-content">
-      <div class="input-content">
-        <label for="search">Search species</label>
-        <input type="text" name="search"
-          id="search"
-          :value="selection
-          ? selection.commonName
-          : null"
-          @change="searchSpecie">
-      </div>
-      </div>
+    <div class="search-card">
+      <label for="search">Search species :</label>
+      <input type="text" name="search"
+        id="search"
+        :value="selection
+        ? selection.commonName
+        : null"
+        @change="searchSpecie">
     </div>
     <ul class="collection">
-      <li class="collection-item taxon-card"
+      <li class="taxon-card"
         v-for="suggestion in species" @click="select(suggestion)">
         <div class="taxonomy">
           <h5>{{suggestion.commonName}}</h5>
@@ -36,10 +32,14 @@
 <script>
 import { mapActions } from 'vuex';
 import vbaSpecies from '@/api/vbaSpecies';
+// import card from './card';
 
 
 export default {
   name: 'speciePicker',
+  components: {
+    // card,
+  },
   data () {
     return {
       obsId: Number(this.observationId),
@@ -101,29 +101,36 @@ export default {
   margin-left: auto;
 }
 
-/*h1, h2 {
-  font-weight: normal;
-}
-
-ul {
-  list-style-type: none;
+.search-card{
   display: flex;
   flex-direction: column;
+  margin-bottom: 1rem;
 }
 
-li {
+.search-card input {
+  box-sizing: border-box;
+  position: relative;
   display: inline-block;
-  margin: .1rem;
-  border: 1px solid black
+  vertical-align: middle;
+  border: 1px #D2D6DF solid;
+  border-radius: 3px;
+  color: #45494E;
+  background-color: #fff;
+  font-size: 1rem;
+  height: 2rem;
+  -webkit-appearance: textfield;
 }
 
-li:hover {
-  display: inline-block;
-  margin: .1rem;
-  border: 1px solid pink
+.speciePicker {
+  margin: .5rem;
 }
 
-a {
-  color: #42b983;
-}*/
+.collection {
+  background: white;
+}
+
+.taxon-card {
+  padding: .5rem;
+  border-bottom: 1px solid #c9c9c9;
+}
 </style>

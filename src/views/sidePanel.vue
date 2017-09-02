@@ -1,13 +1,29 @@
 <template>
   <div class="slideout-menu">
     <div class="content">
-      <h1>Settings</h1>
-      <router-link @click.native="closeMenu" :to="{ name: 'login'}">Login</router-link>
+      <ul>
+        <li>
+          <router-link @click.native="closeMenu" :to="{ name: 'signin'}">
+            {{isLogin ? 'Sign out' : 'Sign in'}}
+          </router-link>
+        </li>
+        <li>
+          <a href="#">Feedback</a>
+        </li>
+        <li>
+          <a href="#">Settings</a>
+        </li>
+        <li>
+          <a href="#">About</a>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'sidePanel',
   data () {
@@ -15,6 +31,9 @@ export default {
     };
   },
   computed: {
+    ...mapGetters([
+      'isLogin',
+    ]),
   },
   methods: {
     closeMenu () {
@@ -26,6 +45,29 @@ export default {
 </script>
 
 <style scoped>
+
+li {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+li::after {
+  background: rgba(32, 22, 71, 0.3);
+  bottom: 0;
+  content: '';
+  height: 0.0625rem;
+  display: block;
+  width: 90%;
+}
+
+li a {
+  color: #201547;
+  display: block;
+  padding: 0.8125rem 4rem 0.75rem 0.875rem;
+  margin: .5rem 0 .5rem 0;
+  text-decoration: none;
+}
+
 .slideout-menu {
   -webkit-overflow-scrolling: touch;
   bottom: 0;
@@ -38,20 +80,6 @@ export default {
   z-index: 0;
 }
 
-.content { 
-  padding: 1rem;
-}
-
-h1 {
-  font-size: 1.5rem;
-  margin: .5rem 0 .5rem 0;
-}
-
-h2 {
-  font-size: 1.125rem;
-  margin: .25rem;
-}
-
 .slideout-menu::before {
   background: #00b7bd;
   content: '';
@@ -60,26 +88,11 @@ h2 {
   width: 100%;
 }
 
+.content { 
+  padding: 1rem;
+}
+
 .content-text {
   margin-left: .5rem;
 }
-
-/*select {
-  appearance: none;
-  border-radius: 0;
-  font-family: inherit;
-  background-color: transparent;
-  padding: 0;
-  border: none;
-  border-bottom: 1px solid #42b983;
-}
-
-.select-wrapper::after {
-  content: '▾';
-  color: #42b983;
-  display: inline-block;
-  margin-left: .5rem;
-  pointer-events: none;
-}*/
-
 </style>

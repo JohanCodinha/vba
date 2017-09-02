@@ -4,7 +4,7 @@
       :style="{ transform: slideoutOpen ? 'translateX(-268px)' : 'translateX(0px)' }">
       <header>
         <div class="header-menu-background"></div>
-        <div class="container">
+        <div class="header-container">
           <router-link class="logo" to="/"><img src="./assets/logo-delwp.png"></router-link>
           <a @click="menu" class="header-menu-burger">
             <div class="menu-burger-box">
@@ -19,8 +19,8 @@
         </div>
       </header>
       <router-view class="app-content"></router-view>
-      <bottomNav class="bottom-nav"></bottomNav>
     </div>
+    <bottomNav :style="{ transform: slideoutOpen ? 'translateX(-268px)' : 'translateX(0px)' }" class="bottom-nav slideLeft"></bottomNav>
     <sidePanel :style="{ display: slideoutOpen ? 'block' : 'none' }"
       @closeMenu="menu"></sidePanel>
     </div>
@@ -105,7 +105,7 @@ header {
   display: block;
 }
 
-.container {
+.header-container {
   padding-left: .5rem;
   padding-right: .5rem;
   display: flex;
@@ -204,8 +204,24 @@ header {
   overflow: auto;
 }
 .bottom-nav {
-  flex: 1 0 auto;
-  width: 100%;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 800;
 }
-
+.btn {
+  text-decoration: none;
+  color: #fff;
+  background-color: #26a69a;
+  text-align: center;
+  letter-spacing: .5px;
+  border: none;
+  border-radius: 2px;
+  display: inline-block;
+  height: 36px;
+  line-height: 36px;
+  padding: 0 2rem;
+  text-transform: uppercase;
+}
 </style>

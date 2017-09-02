@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const apiUrl = 'http://54.66.166.195/api';
+const apiUrl = 'https://vbago.science/api';
 
 const searchSpecies = query => axios
   .get(`${apiUrl}/search`, {

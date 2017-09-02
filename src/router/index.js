@@ -1,12 +1,13 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import obsList from '@/views/obsList/obsList';
+import draftObservations from '@/views/draftObservations/index';
 import imgagePicker from '@/views/components/imagePicker';
 import speciePicker from '@/views/components/speciePicker';
 import generalObservation from '@/views/components/generalObservation';
 import locationPicker from '@/views/components/locationPicker';
 import survey from '@/views/survey/survey';
-import login from '@/views/login/login';
+import signin from '@/views/signin/index';
+import observationsList from '@/views/observations/index';
 
 Vue.use(Router);
 
@@ -14,14 +15,13 @@ export default new Router({
   mode: 'history',
   routes: [
     {
-      path: '/login',
-      name: 'login',
-      component: login,
+      path: '/signin',
+      name: 'signin',
+      component: signin,
     },
     {
       path: '/',
-      name: 'obsList',
-      component: obsList,
+      redirect: '/observations',
     },
     {
       path: '/img/:observationId',
@@ -52,6 +52,16 @@ export default new Router({
       name: 'survey',
       component: survey,
       props: true,
+    },
+    {
+      path: '/observations',
+      name: 'observations',
+      component: observationsList,
+    },
+    {
+      path: '/observations/drafts',
+      name: 'draftObservations',
+      component: draftObservations,
     },
   ],
 });

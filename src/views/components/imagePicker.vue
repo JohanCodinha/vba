@@ -8,7 +8,9 @@
       <input type="file" name="imagePicker" id="imagePicker" class="inputFile"
         multiple
         @change="onFileChange">
-      <label for="imagePicker">+</label>
+      <label for="imagePicker">
+        <i class="material-icons">add_a_photo</i>
+      </label>
      </li>
    </ul>
   </div>
@@ -119,9 +121,13 @@ img {
   display: inline-block;
   min-width: 40px;
   min-height: 40px;
-  border: 2px solid;
+  /*border: 2px solid;*/
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.material-icons {
+  margin-left: 0.6rem;
 }
 </style>

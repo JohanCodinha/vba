@@ -58,14 +58,12 @@ export default {
 }
 
 .card-content_ {
-  /*padding: 1.5rem;*/
+  width: 100%;
   position: relative;
   display: flex;
   flex-grow: 1;
   justify-content: space-between;
-  /*align-items: center;*/
   flex-direction: column;
-  /*height: 5rem;*/
 }
 
 .visible-content{
@@ -79,9 +77,6 @@ export default {
 .card-reveal_ {
   display: flex;
   justify-content: space-between;
-  /*align-items: center;*/
-  /*padding: 1.5rem;*/
-  /*margin: 1.5rem;*/
   position: absolute;
   background-color: #fff;
   width: 100%;
@@ -89,8 +84,6 @@ export default {
   top: 100%;
   bottom:  0;
   transition: transform .3s;
-  /*display: none;*/
-  /*visibility: hidden;*/
 }
 
 .card-reveal-content{
@@ -103,12 +96,11 @@ export default {
 
 .card-revealed {
   visibility: visible;
-  /*margin: 1.5rem;*/
   display: flex;
   transform: translateY(-100%);
 }
 
-.btn_ {
+.btn {
   text-decoration: none;
   color: #fff;
   background-color: #26a69a;
@@ -136,6 +128,10 @@ export default {
 .image img {
   max-height: 100%;
   max-width: 100%;
+}
+
+.material-icons {
+  color: black;
 }
 
 dt::after { 

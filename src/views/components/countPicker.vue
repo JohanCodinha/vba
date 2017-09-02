@@ -1,7 +1,12 @@
 <template>
-  <div class="count-picker">
+  <div class="">
     <label for="count">Count:</label>
-    <input v-model="count" id="count" type="number" pattern="\d*">
+    <div class="count-picker">
+      <i @click="remove" class="material-icons">exposure_minus_1</i>
+      <input class="number-input"
+        v-model="count" id="count" type="number" pattern="\d*">
+      <i @click="add" class="material-icons">exposure_plus_1</i>
+    </div>
   </div>
 </template>
 
@@ -31,7 +36,9 @@ export default {
     count: {
       get: function getter () {
         if (!this.activeDraft) return null;
-        return this.activeDraft.count || null;
+        return this.activeDraft.count
+          ? this.activeDraft.count
+          : 0;
       },
       set: function setter (value) {
         const count = Number(value);
@@ -49,6 +56,13 @@ export default {
     ...mapActions([
       'addCount',
     ]),
+    add () {
+      console.log(this.count);
+      this.count = this.count + 1;
+    },
+    remove () {
+      this.count = this.count - 1;
+    },
   },
 };
 </script>
@@ -78,5 +92,27 @@ li:hover {
 
 a {
   color: #42b983;
+}
+.count-picker {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.number-input {
+  text-align: center;
+  display: block;
+  width: 4rem;
+  height: 100%;
+  padding: 8px 12px 9px;
+  box-sizing: border-box;
+  background-color: #fff;
+  border-radius: 2px;
+  outline: none;
+  border: 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  -webkit-appearance: none;
 }
 </style>

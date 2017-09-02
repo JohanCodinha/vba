@@ -1,11 +1,12 @@
 <template>
   <div class="hello">
-<!--     <button @click='newObservation'>new Obs</button>
- -->    <div class="fixed-action-btn">
-      <a class="btn-floating btn-large waves-effect waves-light"><i class="material-icons"
-      @click='newObservation'>add</i></a>
+    <div class="description">
+<!--       <h1>{{observations.length}} draft{{observations.length > 1 ? 's' : ''}} observation</h1> -->
+      <a class="button"  @click='newObservation'>
+        <i class="material-icons">add_circle</i>
+        <p>New general observation</p>
+      </a>
     </div>
-    <h3>Drafts</h3>
     <ul>
       <draft-observation-card v-for="obs in observations"
         :obsId="obs.id"
@@ -13,24 +14,14 @@
         :siteName="obs.position.description"
         :image="obs.images[0]"
         :status="obs.recordedId === undefined ? 'Local draft': 'Uploaded'">
-
       </draft-observation-card>
-
-    </ul>
-    <h3>Saved Obs</h3>
-    <ul>
-      <observation-card v-for="record in generalObs"
-        :siteName="record.siteNme"
-        :surveyId="record.surveyId"
-        :status="record.expertReviewStatusCde"
-        :key="record.surveyId"></observation-card>
     </ul>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import observationCard from './obsCard';
+// import observationCard from './obsCard';
 import draftObservationCard from './draftObsCard';
 
 export default {
@@ -41,7 +32,7 @@ export default {
     };
   },
   components: {
-    'observation-card': observationCard,
+    // 'observation-card': observationCard,
     'draft-observation-card': draftObservationCard,
   },
   computed: {
@@ -69,32 +60,27 @@ export default {
 </script>
 
 <style scoped>
-/*.fixed-action-btn {
-    position: fixed;
-    right: 23px;
-    bottom: 23px;
-}*/
-/*h1, h2 {
-  font-weight: normal;
+.button {
+  text-transform: none;
+  padding: 0 1rem;
+  box-shadow: 
+  0 2px 2px 0 rgba(0,0,0,0.14),
+  0 1px 5px 0 rgba(0,0,0,0.12),
+  0 3px 1px -2px rgba(0,0,0,0.2);
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
+.button p {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-li {
-  display: inline-block;
-  margin: 0 10px;
+.description {
+  margin: 1rem;
 }
 
-li:nth-child(odd) {
-  background-color: lightgrey;
+h1 {
+  font-size: 1.8rem
 }
-
-a {
-  color: #42b983;
-}*/
 </style>

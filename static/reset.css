@@ -69,3 +69,9 @@ textarea {
 select {
   font-size: 1rem;
 }
+
+html, body {
+
+ /*To smooth any scrolling behavior */
+-webkit-overflow-scrolling: touch;
+}

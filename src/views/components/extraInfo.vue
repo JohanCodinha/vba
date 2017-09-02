@@ -1,10 +1,10 @@
 <template>
   <div class="input-field">
-    <select name="extra-info" id="extra-info" v-model="selected">
+    <label for="extra-info">Extra information:</label>
+    <select class="form-select" name="extra-info" id="extra-info" v-model="selected">
       <option v-for="option in options"
         :value="option.value">{{ option.text }}</option>
     </select>
-    <label for="extra-info">Extra information:</label>
   </div>
 </template>
 
@@ -57,13 +57,32 @@ export default {
       },
     },
   },
-  mounted () {
-    /* eslint-disable */
-    $('select').material_select();
-  },
 };
 </script>
 
 <style scoped>
-
+.form-select {
+/*  opacity: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  cursor: pointer;
+  z-index: 1;
+  display: block;
+  font-size: 16px;
+  background: #fff;
+  overflow: hidden;
+  -webkit-appearance: menulist-button;*/
+  width: 100%;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  border: 1px #D2D6DF solid;
+  border-radius: 3px;
+  color: #45494E;
+  background-color: #fff;
+  font-size: 16px;
+  line-height: 16px;
+  height: 2rem;
+}
 </style>
