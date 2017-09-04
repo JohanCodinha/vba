@@ -127,7 +127,7 @@ const actions = {
     formData.append('commonName', commonName);
     formData.append('scientificNmae', scientificName);
     formData.append('taxonId', taxonId);
-    formData.append('count', count);
+    formData.append('count', count || 0);
     formData.append('dateTime', datetime);
     formData.append('extraInfoCode', extraInfoCode);
     formData.append('userId', userUid);
@@ -153,6 +153,9 @@ const actions = {
   },
   setExtraInfo ({ commit }, { code, obsId }) {
     commit('SET_EXTRA_CODE', { code, obsId });
+  },
+  setDatetime ({ commit }, { datetimeString, obsId }) {
+    commit(types.SET_DATETIME, { datetime: datetimeString, obsId });
   },
 };
 

@@ -3,7 +3,7 @@
     <label>
       <i class="material-icons">today</i>
     </label>
-    <input :value="obsDatetime" id="datetime" type="datetime-local">
+    <input v-model="obsDatetime" id="datetime" type="datetime-local">
   </div>
 </template>
 
@@ -31,9 +31,19 @@ export default {
       const draft = this.allitems.find(item => item.id === this.obsId);
       return draft;
     },
-    obsDatetime () {
-      if (!this.activeDraft) return null;
-      return this.activeDraft.datetime || format(new Date(), 'YYYY-MM-DDTHH:mm');
+    obsDatetime: {
+      get: function dateGetter () {
+        if (!this.activeDraft) return null;
+        if (!this.activeDraft.datetime) {
+          const datetimeString = format(new Date(), 'YYYY-MM-DDTHH:mm');
+          this.$store.dispatch('setDatetime', { datetimeString, obsId: this.obsId });
+          return this.activeDraft.datetime;
+        }
+        return this.activeDraft.datetime;
+      },
+      set: function dateSetter (datetimeString) {
+        this.$store.dispatch('setDatetime', { datetimeString, obsId: this.obsId });
+      },
     },
   },
   methods: {

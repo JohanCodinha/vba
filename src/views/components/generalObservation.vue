@@ -66,7 +66,8 @@
       <template v-if="!recordedId">
         <button v-if="!uploading"class="button" 
           @click="upload"
-          :class="{ deactivated: !obsIsValid }">Upload
+          :class="{ deactivated: !obsIsValid }"
+          :disabled="!obsIsValid">Upload
         </button>
         <div v-else class="loader loader--style3" title="2">
           <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -186,6 +187,7 @@ export default {
     },
     recordedId () {
       const draft = this.activeDraft;
+      if (!draft) return false;
       return draft.recordedId;
     },
   },
@@ -206,7 +208,6 @@ export default {
   mounted: async function mountedEvent () {
     if (this.observationId === undefined) {
       const observationId = await this.createObservation();
-      // this.obsId = newObsId;
       console.log(`new draft created ${observationId}`);
       this.$router.replace({ name: 'GeneralObs', params: { observationId } });
     }
