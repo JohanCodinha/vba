@@ -12,7 +12,6 @@ const state = {
   userUid: null,
 };
 
-// getters
 const getters = {
   isLogin: (state) => {
     const { jwt, timestamp } = state.jwt;

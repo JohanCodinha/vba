@@ -5,12 +5,10 @@
     </div>
     <div class="text-container">
       <div class="taxonomy">
-      <div class="top-row">
         <p class="common-name">{{commonName}}</p>
-        <p v-if="conservationStatus" class="status">{{conservationStatus}}</p>
-      </div>
         <p>{{scientificName}}</p>
       </div>
+      <p v-if="conservationStatus" class="status">{{conservationStatus}}</p>
     </div>
     </div>
   </li>
@@ -114,11 +112,15 @@ export default {
 
 .status {
   background-color: #cedc00;
+  font-weight: 500;
   padding: 0 5px 0 5px;
   border-radius: 5px;
+  /*flex: 0 0 auto;*/
+  /*flex-grow: 0;*/
   display: flex;
-  justify-content: center;
-  align-items: center;
+  /*display: flex;*/
+  justify-content: flex-end;
+  align-items: flex-end;
 }
 
 </style>

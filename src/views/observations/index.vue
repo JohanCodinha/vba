@@ -1,11 +1,20 @@
 <template>
-  <div class="hello">
-    <h1>{{generalObs.length}} saved observations</h1>
+  <div class="container">
+  <div class="loggedOut" v-if="!logedIn">
+    <h1>
+      <router-link class="link" :to="{ name: 'signin'}">Sign in</router-link>
+      to the Victorian Biodiversity Atlas to see your observations
+    </h1>
+  </div>
+    <h1 v-if="generalObs.length > 0">{{generalObs.length}} saved observations</h1>
     <ul>
       <observation-card v-for="record in generalObs"
+        :scientificName="record.species && record.species[0].scientificNme"
+        :commonName="record.species && record.species[0].commonNme"
         :siteName="record.siteNme"
         :surveyId="record.surveyId"
         :status="record.expertReviewStatusCde"
+        :startDate="record.surveyStartSdt"
         :key="record.surveyId"></observation-card>
     </ul>
   </div>
@@ -27,17 +36,12 @@ export default {
   computed: {
     ...mapGetters({
       generalObs: 'general',
+      logedIn: 'isLogin',
     }),
-    // observations () {
-    //   return this.$store.state.newObservations.items;
-    // },
   },
   methods: {
     ...mapActions([
     ]),
-    // async newObservation () {
-    //   this.$router.push({ name: 'GeneralObs' });
-    // },
     editObservation (obsId) {
       this.$router.push({ name: 'GeneralObs', params: { observationId: obsId } });
     },
@@ -49,8 +53,34 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  margin: .5rem;
+  margin-bottom: 3rem;
+  display: flex;
+  flex-direction: column;
+}
+
 h1 {
   margin: 1rem;
   font-size: 1.8rem
 }
+
+.loggedOut {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.link {
+  color: #00b7bd;
+  text-decoration: underline;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+}
+
 </style>

@@ -13,7 +13,8 @@
         :specieName="obs.taxonomy.commonName"
         :siteName="obs.position.description"
         :image="obs.images[0]"
-        :status="obs.recordedId === undefined ? 'Local draft': 'Uploaded'">
+        :status="obs.recordedId === undefined ? 'Local draft': 'Uploaded'"
+        :key="obsId">
       </draft-observation-card>
     </ul>
   </div>
@@ -60,6 +61,13 @@ export default {
 </script>
 
 <style scoped>
+.hello {
+  margin: .5rem;
+  margin-bottom: 3rem;
+  display: flex;
+  flex-direction: column;
+}
+
 .button {
   text-transform: none;
   padding: 0 1rem;

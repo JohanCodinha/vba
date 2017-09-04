@@ -1,12 +1,15 @@
 <template>
-  <div>
-    <p>Survey: {{this.surveyId}}</p>
+  <div class="container">
+    <!-- <p>Survey: {{this.surveyId}}</p> -->
     <ul>
       <specie-card v-for="specie in species"
         :commonName="specie.commonNme"
         :scientificName="specie.scientificNme"
         :count="specie.totalCountInt"
-        :imagesId="specie.images.map(i=>i.id)"></specie-card> 
+        :imagesId="specie.images.map(i=>i.id)"
+        :status="specie.reliabilityDesc"
+        :extraDescription="specie.extraDesc">
+      </specie-card> 
     </ul>
   </div>
 </template>
@@ -63,5 +66,12 @@ li {
 
 a {
   color: #42b983;
+}
+
+.container {
+  margin: .5rem;
+  margin-bottom: 3rem;
+  display: flex;
+  flex-direction: column;
 }
 </style>

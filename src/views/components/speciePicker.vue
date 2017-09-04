@@ -147,4 +147,8 @@ export default {
   padding: .5rem;
   border-bottom: 1px solid #c9c9c9;
 }
+
+.collection li:nth-child(even) {
+  background-color: #f7f7f7;
+}
 </style>

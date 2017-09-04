@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import newObservations from './modules/newObservations';
 import observations from './modules/observations';
 import account from './modules/account';
+import explore from './modules/explore';
 // import * as getters from './getters';
 // import * as actions from './actions';
 // import mutations from './mutations';
@@ -21,6 +22,7 @@ const store = new Vuex.Store({
     account,
     observations,
     newObservations,
+    explore,
   },
 });
 export default store;

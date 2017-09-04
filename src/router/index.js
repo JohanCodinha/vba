@@ -8,6 +8,7 @@ import locationPicker from '@/views/components/locationPicker';
 import survey from '@/views/survey/survey';
 import signin from '@/views/signin/index';
 import observationsList from '@/views/observations/index';
+import around from '@/views/around/index';
 
 Vue.use(Router);
 
@@ -62,6 +63,11 @@ export default new Router({
       path: '/observations/drafts',
       name: 'draftObservations',
       component: draftObservations,
+    },
+    {
+      path: '/explore',
+      name: 'exploreAround',
+      component: around,
     },
   ],
 });

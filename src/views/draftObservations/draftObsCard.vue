@@ -103,4 +103,13 @@ export default {
 .content {
   width: 100%;
 }
+
+.content dl dd {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.content dl dt {
+  color: #5d636a;
+}
 </style>

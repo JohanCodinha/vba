@@ -202,6 +202,8 @@ header {
 .app-content {
   flex: 1;
   overflow: auto;
+  margin-bottom: 3rem;
+
 }
 .bottom-nav {
   position: fixed;
