@@ -11,7 +11,7 @@
       <dt>Date</dt>
       <dd>{{formatedDate}}</dd>
       <dt>Status</dt>
-      <dd>{{status}}</dd>
+      <dd>{{status === 'a' ? 'Approved' : status}}</dd>
     </dl>
     <div slot="reveal">
       <a class="btn red_"
@@ -50,11 +50,11 @@ export default {
       default () { return undefined; },
     },
     commonName: {
-      type: String,
+      // type: String,
       default () { return undefined; },
     },
     scientificName: {
-      type: String,
+      // type: String,
       default () { return ''; },
     },
     startDate: {

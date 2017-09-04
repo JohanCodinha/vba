@@ -2,7 +2,7 @@
   <div class="location-picker">
     <div id="map" class="mapboxgl-map">
       <div class="location-display">
-        <a href="#" @click="$router.go(-1)">⬅</a>
+        <i @click="$router.go(-1)" class="material-icons">arrow_back</i>
         <div>
           <p>latitude: {{markerLatitude}}</p>
           <p>longitude: {{markerLongitude}}</p>
@@ -202,36 +202,24 @@ export default {
 </script>
 
 <style scoped>
-h1, h2 {
-  font-weight: normal;
+
+.material-icons {
+  margin: .3rem;
 }
 
-ul {
-  list-style-type: none;
+.location-picker {
+  /*height: 100vh;*/
   display: flex;
-  flex-direction: column;
-}
-
-li {
-  display: inline-block;
-  margin: .1rem;
-  border: 1px solid black
-}
-
-li:hover {
-  display: inline-block;
-  margin: .1rem;
-  border: 1px solid pink
-}
-
-a {
-  color: #42b983;
+  flex: 1;
 }
 
 .mapboxgl-map {
   position: relative;
-  height: 100vh;
+  /*height: 100%;*/
   width: 100vw;
+  /*overflow: hidden;*/
+  overflow-x: hidden; 
+  overflow-y: auto;
 }
 
 .center-marker {
@@ -270,6 +258,7 @@ a {
   display: flex;
   font-size: 1rem;
   align-items: center;
+  border-radius: 3px;
 }
 
 .location-display a {

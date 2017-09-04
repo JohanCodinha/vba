@@ -1,6 +1,6 @@
 <template>
   <card class="specie-card">
-    <img v-if="imagesId" slot="image" :src="imageSources">
+    <img v-if="imageSources" slot="image" :src="imageSources">
     <div class="content" slot="content">
       <dl>
         <dt>Specie</dt>
@@ -9,7 +9,7 @@
 <!--         <dt>Site name</dt>
         <dd>{{siteName || 'Unknown location'}}</dd> -->
         <dt>Status</dt>
-        <dd>{{status}}</dd>
+        <dd>{{status === 'a' ? 'Approved' : status}}</dd>
         <dt>Extra</dt>
         <dd>{{extraDescription}}</dd>
       </dl>

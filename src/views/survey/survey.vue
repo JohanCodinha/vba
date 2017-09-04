@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <!-- <p>Survey: {{this.surveyId}}</p> -->
+    <h1 v-if="species && !species.length">No species found for survey {{surveyId}}</h1>
     <ul>
       <specie-card v-for="specie in species"
         :commonName="specie.commonNme"

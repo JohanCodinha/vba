@@ -6,7 +6,7 @@
     <div class="card-content_">
       <div class="visible-content">
         <slot name="content"></slot>
-        <a href="#">
+        <a v-if="this.$slots['reveal']" href="#">
           <i @click="cardReveal" class="material-icons">more_vert</i>
         </a>
       </div>

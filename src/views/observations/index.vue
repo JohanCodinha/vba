@@ -9,8 +9,8 @@
     <h1 v-if="generalObs.length > 0">{{generalObs.length}} saved observations</h1>
     <ul>
       <observation-card v-for="record in generalObs"
-        :scientificName="record.species && record.species[0].scientificNme"
-        :commonName="record.species && record.species[0].commonNme"
+        :scientificName="record.species && record.species.length && record.species[0].scientificNme"
+        :commonName="record.species && record.species.length && record.species[0].commonNme"
         :siteName="record.siteNme"
         :surveyId="record.surveyId"
         :status="record.expertReviewStatusCde"

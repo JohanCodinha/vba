@@ -63,10 +63,30 @@
         <countPicker :obsId="obsId"></countPicker>
       </div>
       <div class="action">
-        <button class="button" 
+      <template v-if="!recordedId">
+        <button v-if="!uploading"class="button" 
           @click="upload"
-          :class="{ deactivated: !obsIsValid }">Upload</button>
+          :class="{ deactivated: !obsIsValid }">Upload
+        </button>
+        <div v-else class="loader loader--style3" title="2">
+          <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+             width="40px" height="40px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+          <path fill="#000" d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+            <animateTransform attributeType="xml"
+              attributeName="transform"
+              type="rotate"
+              from="0 25 25"
+              to="360 25 25"
+              dur="0.6s"
+              repeatCount="indefinite"/>
+            </path>
+          </svg>
         </div>
+      </template>
+      <template v-if="recordedId">
+        <h2>Upload succes !</h2>
+      </template>
+      </div>
     </div>
   </div>
 </template>
@@ -94,11 +114,11 @@ export default {
       default () { return undefined; },
     },
   },
-  // data () {
-  //   return {
-  //     obsId: Number(this.observationId),
-  //   };
-  // },
+  data () {
+    return {
+      uploading: false,
+    };
+  },
   computed: {
     ...mapGetters([
       'allitems',
@@ -164,6 +184,10 @@ export default {
       }
       return false;
     },
+    recordedId () {
+      const draft = this.activeDraft;
+      return draft.recordedId;
+    },
   },
   methods: {
     ...mapActions([
@@ -174,7 +198,9 @@ export default {
     },
     upload () {
       console.log('uploading start');
-      this.$store.dispatch('uploadObservation', { observation: this.activeDraft });
+      this.uploading = true;
+      this.$store.dispatch('uploadObservation', { observation: this.activeDraft })
+        .then(() => this.false);
     },
   },
   mounted: async function mountedEvent () {
@@ -190,8 +216,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.general-observation {
+.container {
   margin: .5rem;
+  /*margin-bottom: 3rem;*/
 }
 
 .specie-lookup {

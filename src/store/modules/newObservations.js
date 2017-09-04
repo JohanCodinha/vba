@@ -106,7 +106,7 @@ const actions = {
     commit('DELETE_OBSERVATION', obsId);
   },
 
-  async uploadObservation ({ rootState, commit }, { observation }) {
+  async uploadObservation ({ rootState, commit, dispatch }, { observation }) {
     const jwt = rootState.account.jwt.value;
     const { userUid, displayName } = rootState.account;
     const images = observation.images;
@@ -137,6 +137,7 @@ const actions = {
       const { data: { taxonRecordedId } } = await postObservation(formData, jwt);
       console.log(taxonRecordedId);
       commit(types.SET_RECORDED_ID, { obsId: observation.id, taxonRecordedId });
+      dispatch('getGeneralObs');
     } catch (error) {
       console.log(error);
     }
