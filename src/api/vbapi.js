@@ -7,13 +7,12 @@ export const login = (username, password) => axios
     username,
     password,
   })
-  .then(res => res.data)
-  .catch(error => console.log(error.message));
+  .then(res => res.data);
+  // .catch(error => console.log(error.message));
 
 export const guestLogin = () => axios
   .get(`${apiUrl}/auth/guest`)
-  .then(res => res.data.jwt)
-  .catch(error => console.log(error.message));
+  .then(res => res.data.jwt);
 
 export const postObservation = (formData, jwt) => axios
   .post(`${apiUrl}/record`, formData, {

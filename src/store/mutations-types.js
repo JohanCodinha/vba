@@ -19,3 +19,6 @@ export const SET_POSITION = 'SET_POSITION';
 export const ADD_SPECIE = 'ADD_SPECIE';
 export const CLEAR_AROUND_SPECIES = 'CLEAR_AROUND_SPECIES';
 export const UPDATE_STATUS = 'UPDATE_STATUS';
+
+// Account module
+export const STATUS = 'STATUS';

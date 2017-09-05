@@ -108,17 +108,11 @@ const actions = {
         species.forEach((specie) => {
           if (get(specie, 'countOfSightings') > 0) {
             commit(types.ADD_SPECIE, specie);
-            console.log(specie);
           }
         });
         return species.length;
       })
       .catch(error => console.log(error));
-  },
-  async fetchSpecies ({ commit }) {
-    console.log('fetciiing');
-
-    commit();
   },
 };
 
