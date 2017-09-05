@@ -1,9 +1,9 @@
 <template>
   <div class="general-observation">
-    <div class="navigation">
+<!--     <div class="navigation">
       <i @click="$router.push('/observations/drafts')"class="material-icons">arrow_back</i>
       <h1>General Observation</h1>
-    </div>
+    </div> -->
     <div class="container">
       <div class="form-block">
         <p>Add images :</p>
@@ -218,7 +218,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .container {
-  margin: .5rem;
+  margin: 1rem .5rem 1rem .5rem;
   /*margin-bottom: 3rem;*/
 }
 

@@ -5,7 +5,11 @@
       <header>
         <div class="header-menu-background"></div>
         <div class="header-container">
-          <router-link class="logo" to="/"><img src="./assets/logo-delwp.png"></router-link>
+          <div class="header-container-left">
+            <i v-if="displayBackArrow" @click="backArrow" class="material-icons">arrow_back</i>
+            <img v-if="!displayBackArrow" class="logo" src="./assets/logo-delwp.png">
+            <p class="header-back-route" v-else>Test</p>
+          </div>
           <a @click="menu" class="header-menu-burger">
             <div class="menu-burger-box">
               <div class="menu-burger-inner"
@@ -42,9 +46,27 @@ export default {
     sidePanel,
     bottomNav,
   },
+  computed: {
+    displayBackArrow () {
+      switch (this.$route.path) {
+        case '/':
+        case '/observations':
+        case '/observations/drafts':
+        case '/explore':
+          return false;
+          // break;
+        default:
+          return this.$route;
+      }
+    },
+  },
   methods: {
     menu () {
       this.slideoutOpen = !this.slideoutOpen;
+    },
+    backArrow () {
+      console.log('backarrow');
+      this.$router.go(-1);
     },
   },
 };
@@ -113,6 +135,12 @@ header {
   justify-content: space-between;
   align-items: center;
   z-index: 2;
+}
+
+.header-container-left {
+  display: flex;
+  flex: 1;
+  align-items: center;
 }
 
 .header-menu-burger {
@@ -225,5 +253,16 @@ header {
   line-height: 36px;
   padding: 0 2rem;
   text-transform: uppercase;
+}
+
+.material-icons {
+  color: white;
+  margin-left: 1rem;
+}
+
+.header-back-route {
+  color: white;
+  font-size: 1.5rem;
+  margin-left: 1rem;
 }
 </style>

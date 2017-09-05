@@ -25,12 +25,13 @@
       <div class="action">
         <button>Log in</button>
       </div>
+      <p>{{status}}</p>
     </form>
   </div>
 </template>
 
 <script>
-// import { mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'login',
@@ -40,14 +41,23 @@ export default {
       password: '',
     };
   },
+  computed: {
+    ...mapGetters([
+      'status',
+      'isLogin',
+    ]),
+  },
   methods: {
     async login () {
-      const tokenFetched = await this.$store.dispatch('fetchToken', {
+      await this.$store.dispatch('fetchToken', {
         username: this.username,
         password: this.password });
-      console.log(`${tokenFetched ? 'login succesfull' : 'failled login'}`);
-      this.$store.dispatch('getGeneralObs');
-      this.$router.push({ name: 'observations' });
+      if (this.isLogin) {
+        this.$store.dispatch('getGeneralObs');
+        this.$router.push({ name: 'observations' });
+      } else {
+        this.password = '';
+      }
     },
   },
 };
