@@ -11,7 +11,8 @@
           Username
         </label>
         <div class="text-input">
-          <input id="signin-username" v-model="username" type="text" name="username">
+          <input id="signin-username" v-model="username" type="text" name="username"
+            autocapitalize="none" spellcheck="false">
         </div>
       </div>
       <div class="form-block">
@@ -19,7 +20,8 @@
           Password
         </label>
         <div class="text-input">
-          <input id="signin-password" v-model="password" type="password">
+          <input id="signin-password" v-model="password" type="password"
+            autocapitalize="none" spellcheck="false" >
         </div>
       </div>
       <div class="action">
