@@ -2,7 +2,7 @@
   <div class="container">
   <div class="loggedOut" v-if="!logedIn">
     <h1>
-      <router-link class="link" :to="{ name: 'signin'}">Sign in</router-link>
+      <router-link class="link" :to="{ name: 'Signin'}">Sign in</router-link>
       to the Victorian Biodiversity Atlas to see your observations
     </h1>
   </div>
@@ -54,8 +54,7 @@ export default {
 
 <style scoped>
 .container {
-  margin: .5rem;
-  margin-bottom: 3rem;
+  padding-bottom: .5rem;
   display: flex;
   flex-direction: column;
 }

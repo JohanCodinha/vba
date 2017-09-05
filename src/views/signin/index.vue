@@ -11,7 +11,7 @@
           Username
         </label>
         <div class="text-input">
-          <input id="signin-username" v-model="username" type="string" name="username" autocorrect="off" autocapitalize="none">
+          <input id="signin-username" v-model="username" type="text" name="username">
         </div>
       </div>
       <div class="form-block">
@@ -19,14 +19,14 @@
           Password
         </label>
         <div class="text-input">
-          <input id="signin-password" v-model="password" type="string" name="password" autocorrect="off" autocapitalize="none">
+          <input id="signin-password" v-model="password" type="password">
         </div>
       </div>
       <div class="action">
-        <button>Log in</button>
+        <input type="submit" name="" value="Log in" class="button">
       </div>
-      <p>{{status}}</p>
     </form>
+      <p>{{status}}</p>
   </div>
 </template>
 
@@ -136,15 +136,15 @@ form {
   justify-content: center;
 }
 
-button {
+.button {
   background: #201547;
   border: 0;
   color: #fff;
   font-size: 1rem;
   height: 3.125rem;
-  min-width: 9.6875rem;
+  /*min-width: 9.6875rem;*/
   margin: 1rem;
-  padding: 0.875rem 1.25rem;
+  /*padding: 0.875rem 1.25rem;*/
   letter-spacing: .05rem;
   text-align: center;
   text-decoration: none;

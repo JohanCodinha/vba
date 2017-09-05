@@ -14,7 +14,7 @@
         :siteName="obs.position.description"
         :image="obs.images[0]"
         :status="obs.recordedId === undefined ? 'Local draft': 'Uploaded'"
-        :key="obsId">
+        :key="obs.id">
       </draft-observation-card>
     </ul>
   </div>
@@ -62,8 +62,7 @@ export default {
 
 <style scoped>
 .hello {
-  margin: .5rem;
-  margin-bottom: 3rem;
+  padding-bottom: .5rem;
   display: flex;
   flex-direction: column;
 }

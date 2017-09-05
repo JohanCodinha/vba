@@ -5,11 +5,11 @@
       <header>
         <div class="header-menu-background"></div>
         <div class="header-container">
-          <div class="header-container-left">
-            <i v-if="displayBackArrow" @click="backArrow" class="material-icons">arrow_back</i>
-            <img v-if="!displayBackArrow" class="logo" src="./assets/logo-delwp.png">
-            <p class="header-back-route" v-else>Test</p>
+          <div class="header-container-left" v-if="displayBackArrow" @click="backArrow">
+            <i class="material-icons">arrow_back</i>
+            <p class="header-back-route" >{{backButtonText}}</p>
           </div>
+          <img v-if="!displayBackArrow" class="logo" src="./assets/logo-delwp.png">
           <a @click="menu" class="header-menu-burger">
             <div class="menu-burger-box">
               <div class="menu-burger-inner"
@@ -57,6 +57,22 @@ export default {
           // break;
         default:
           return this.$route;
+      }
+    },
+    backButtonText () {
+      console.log(this.$route.name);
+      switch (this.$route.name) {
+        case '':
+        case 'SpeciePicker':
+        case 'LocationPicker':
+          return 'Observation';
+        case 'GeneralObs':
+        case 'Signin':
+          return 'Observations';
+        case '/explore':
+          return this.$route.name;
+        default:
+          return '';
       }
     },
   },
@@ -228,6 +244,7 @@ header {
 }
 
 .app-content {
+  margin: 0 .5rem 0 .5rem;
   flex: 1;
   overflow: auto;
   margin-bottom: 3rem;

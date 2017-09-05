@@ -3,7 +3,7 @@
     <div class="content">
       <ul>
         <li>
-          <router-link @click.native="closeMenu" :to="{ name: 'signin'}">
+          <router-link @click.native="closeMenu" :to="{ name: 'Signin'}">
             {{isLogin ? 'Sign out' : 'Sign in'}}
           </router-link>
         </li>

@@ -77,7 +77,7 @@ export default {
 }
 
 .container {
-  margin: .5rem;
+  /*margin: .5rem;*/
   margin-bottom: 3rem;
   display: flex;
   flex-direction: column;
