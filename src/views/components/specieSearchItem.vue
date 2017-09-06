@@ -8,7 +8,7 @@
         <p class="common-name">{{commonName}}</p>
         <p>{{scientificName}}</p>
       </div>
-      <p>Count: {{records.reduce((acc, r) => { return (r.totalCountInt || 1 ) + acc}, 0)}}</p>
+      <p v-if="records.length">Count: {{records.reduce((acc, r) => { return (r.totalCountInt || 1 ) + acc}, 0)}}</p>
       <p v-if="conservationStatus" class="status">{{conservationStatus}}</p>
     </div>
     </div>
