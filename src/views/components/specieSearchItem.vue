@@ -1,7 +1,7 @@
 <template>
   <li class="specie-li">
     <div class="avatar">
-      <img v-if="imageSource" :src="'https://res.cloudinary.com/vbago/image/fetch/w_300,f_auto/' + imageSource">
+      <img v-if="imageSource" :src="'https://res.cloudinary.com/vba/image/fetch/w_300,f_auto/' + imageSource">
     </div>
     <div class="text-container">
       <div class="taxonomy">
