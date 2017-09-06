@@ -138,6 +138,7 @@ export default {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+  visibility:hidden;
   margin: 0;
 }
 
