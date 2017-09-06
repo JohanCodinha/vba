@@ -43,7 +43,7 @@ export default {
       set: function setter (value) {
         const count = Number(value);
         const obsId = this.obsId;
-        if (!isNaN(count)) {
+        if (!isNaN(count) && count >= 0) {
           console.log(`count set to ${value}`);
           this.$store.dispatch('setCount', { count, obsId });
         } else {

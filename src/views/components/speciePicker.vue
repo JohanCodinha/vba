@@ -6,6 +6,28 @@
         id="search"
         v-model="searchInput">
     </div>
+    <div class="discipline">
+      <form>
+        <ul>
+          <li :class="{ checked: discipline === 'all'}">
+            <input v-model="discipline" type="radio" id="all" name="discipline" value="all">
+            <label for="all">All</label>
+          </li>
+          <li :class="{ checked: discipline === 'flora'}">
+            <input v-model="discipline" type="radio" id="flora" name="discipline" value="flora">
+            <label for="flora">Flora</label>
+          </li>
+          <li :class="{ checked: discipline === 'fauna'}">
+            <input v-model="discipline" type="radio" id="fauna" name="discipline" value="fauna">
+            <label for="fauna">Fauna</label>
+          </li>
+          <li :class="{ checked: discipline === 'marine'}">
+            <input v-model="discipline" type="radio" id="marine" name="discipline" value="marine">
+            <label for="marine">Marine</label>
+          </li>
+        </ul>
+      </form>
+    </div>
     <ul class="collection">
       <li v-for="suggestion in species">
         <specieSearchItem
@@ -16,21 +38,6 @@
           @click.native="select(suggestion)"
         ></specieSearchItem>
       </li>
-      <!-- :imageLink="suggestion.images" -->
-      <!-- <li class="taxon-card"
-        v-for="suggestion in species" @click="select(suggestion)">
-        <div class="description">
-          <img class="thumbnail" v-if="suggestion.images[0]"
-            :src="suggestion.images[0].s3Url">
-          <i :style="{ visibility: (suggestion.description || suggestion.images[0])
-              ? 'visible' : 'hidden'}"
-              class="material-icons">info_outline</i>
-        </div>
-        <div class="taxonomy">
-          <h5>{{suggestion.commonName}}</h5>
-          <p>{{suggestion.scientificName}}</p>
-        </div>
-      </li> -->
     </ul>
   </div>
 </template>
@@ -53,6 +60,7 @@ export default {
       obsId: Number(this.observationId),
       species: [],
       searchInput: undefined,
+      discipline: null,
     };
   },
   props: {
@@ -63,7 +71,9 @@ export default {
   },
   watch: {
     // eslint-disable-next-line
-    searchInput: function (inputString) { this.searchSpecie(inputString) },
+    searchInput: function () { this.searchSpecie() },
+    // eslint-disable-next-line
+    discipline: function () { this.searchSpecie() },
   },
   methods: {
     ...mapActions([
@@ -71,8 +81,11 @@ export default {
     ]),
     // eslint-disable-next-line
     searchSpecie: debounce(
-      function searchSpecie (inputString) {
-        vbaSpecies(inputString)
+      function searchSpecie () {
+        const inputString = this.searchInput;
+        const discipline = this.discipline;
+        if (!inputString) return;
+        vbaSpecies(inputString, discipline)
           .then((response) => {
             this.$data.species = response;
           });
@@ -92,6 +105,48 @@ export default {
 </script>
 
 <style scoped>
+.discipline {
+  position: relative;
+  font-size: 1.2rem;
+  line-height: 2rem;
+}
+
+.discipline::before {
+  background: rgba(0, 0, 0, .1 );
+  bottom: 0;
+  content: '';
+  height: 0.125rem;
+  left: 0;
+  position: absolute;
+  right: 0;
+}
+
+.discipline ul {
+  display: flex;
+  justify-content: space-around;
+  margin: .5rem;
+}
+
+.discipline li {
+  display: flex;
+  padding: 0 .2rem 0 .2rem;
+  border-bottom: 0.125rem solid rgba(0, 0, 0, 0 );
+  transition: all 0.35s ease;
+}
+
+.discipline input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+.discipline .checked{
+  border-bottom: 0.125rem solid #00b7bd;
+}
+
+
+
 .thumbnail {
   max-width: 10rem;
 }
