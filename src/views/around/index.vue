@@ -18,6 +18,7 @@
               :scientificName="suggestion.scientificName"
               :conservationStatus="suggestion.conservationStatus.vicAdvisory"
               :imageSource="get(suggestion, 'images[0].s3Url')"
+              :records="records.filter(r => r.taxonId === suggestion.taxonId)"
               @click.native="select(suggestion)"
             ></specieSearchItem>
           </li>
@@ -55,6 +56,7 @@ export default {
     ...mapGetters([
       'species',
       'status',
+      'records',
     ]),
   },
   methods: {
