@@ -208,16 +208,13 @@ export default {
 }
 
 .location-picker {
-  /*height: 100vh;*/
   display: flex;
   flex: 1;
 }
 
 .mapboxgl-map {
   position: relative;
-  /*height: 100%;*/
   width: 100vw;
-  /*overflow: hidden;*/
   overflow-x: hidden; 
   overflow-y: auto;
 }

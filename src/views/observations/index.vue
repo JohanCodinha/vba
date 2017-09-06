@@ -54,6 +54,7 @@ export default {
 
 <style scoped>
 .container {
+  margin: 0 .5rem 0 .5rem;
   padding-bottom: .5rem;
   display: flex;
   flex-direction: column;

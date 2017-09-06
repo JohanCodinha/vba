@@ -9,7 +9,8 @@
         :count="specie.totalCountInt"
         :imagesId="specie.images.map(i=>i.id)"
         :status="specie.reliabilityDesc"
-        :extraDescription="specie.extraDesc">
+        :extraDescription="specie.extraDesc"
+        :key="specie.surveyId">
       </specie-card> 
     </ul>
   </div>

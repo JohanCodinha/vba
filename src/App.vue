@@ -244,7 +244,6 @@ header {
 }
 
 .app-content {
-  margin: 0 .5rem 0 .5rem;
   flex: 1;
   overflow: auto;
   margin-bottom: 3rem;

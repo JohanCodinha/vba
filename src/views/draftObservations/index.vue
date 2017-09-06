@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <div class="container">
     <div class="description">
 <!--       <h1>{{observations.length}} draft{{observations.length > 1 ? 's' : ''}} observation</h1> -->
       <a class="button"  @click='newObservation'>
@@ -61,7 +61,8 @@ export default {
 </script>
 
 <style scoped>
-.hello {
+.container {
+  margin: 0 .5rem 0 .5rem;
   padding-bottom: .5rem;
   display: flex;
   flex-direction: column;

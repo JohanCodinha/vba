@@ -1,7 +1,7 @@
 /* eslint-disable no-shadow */
 import Vue from 'vue';
 import { get } from 'lodash';
-import { guestLogin, searchSpecies } from '@/api/vbapi';
+import { guestLogin, searchSpecies, specieRecords } from '@/api/vbapi';
 import * as types from '../mutations-types';
 
 const state = {
@@ -16,6 +16,7 @@ const state = {
     error: null,
   },
   species: [],
+  records: [],
 };
 
 // getters
@@ -45,6 +46,8 @@ const getters = {
   },
   species: state => state.species,
   status: state => state.status,
+  position: state => state.position,
+  records: state => state.records,
 };
 
 const actions = {
@@ -98,21 +101,42 @@ const actions = {
     if (!token || !searchArea) {
       throw new Error('Search could not be perform, missing search parameters and/or token');
     }
-    return searchSpecies(searchArea, token)
-      .then((species) => {
-        commit(types.UPDATE_STATUS, { searched: true });
-        if (!species) {
-          return new Error('No species found at location');
+
+    try {
+      const species = await searchSpecies(searchArea, token);
+      commit(types.UPDATE_STATUS, { searched: true });
+      if (!species) {
+        throw new Error('No species found at location');
+      }
+      commit(types.CLEAR_AROUND_SPECIES);
+      species.forEach(async (specie) => {
+        if (get(specie, 'countOfSightings') > 0) {
+          commit(types.ADD_SPECIE, specie);
         }
-        commit(types.CLEAR_AROUND_SPECIES);
-        species.forEach((specie) => {
-          if (get(specie, 'countOfSightings') > 0) {
-            commit(types.ADD_SPECIE, specie);
-          }
-        });
-        return species.length;
-      })
-      .catch(error => console.log(error));
+        const records = await specieRecords(searchArea, specie.taxonId, token);
+        commit('ADD_RECORDS', records);
+      });
+      // return species.length;
+    } catch (error) {
+      console.log(error);
+    }
+
+    // return
+    //   .then((species) => {
+    //     commit(types.UPDATE_STATUS, { searched: true });
+    //     if (!species) {
+    //       return new Error('No species found at location');
+    //     }
+    //     commit(types.CLEAR_AROUND_SPECIES);
+    //     species.forEach((specie) => {
+    //       // specieRecords()
+    //       if (get(specie, 'countOfSightings') > 0) {
+    //         commit(types.ADD_SPECIE, specie);
+    //       }
+    //     });
+    //     return species.length;
+    //   })
+    //   .catch(error => console.log(error));
   },
 };
 
@@ -148,6 +172,10 @@ const mutations = {
   [types.UPDATE_STATUS] (state, statusUpdate) {
     const newStatus = Object.assign({}, state.status, statusUpdate);
     Vue.set(state, 'status', newStatus);
+  },
+  [types.ADD_RECORDS] (state, records) {
+    console.log(records);
+    Vue.set(state, 'records', [...state.records, ...records]);
   },
 };
 

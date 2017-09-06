@@ -1,25 +1,29 @@
 <template>
-  <div class="around container">
-    <div v-if="!status.searched" class="description">
-      <h1>Explore flora &amp; fauna near you </h1>
-      <i class="material-icons">location_searching</i>
-    </div>
-    <template v-else>
-      <div v-if="species" @click="searchSpecies" class="reload">
-        <h1><i class="material-icons">autorenew</i>{{species.length}} species found</h1>
+  <div>
+    <explorer-map v-if="species"></explorer-map>
+    <div class="container">
+      <div v-if="!status.searched" class="description">
+        <h1>Explore flora &amp; fauna near you </h1>
+        <i class="material-icons">location_searching</i>
       </div>
-      <ul class="collection">
-        <li v-for="suggestion in species">
-          <specieSearchItem
-            :commonName="suggestion.commonName"
-            :scientificName="suggestion.scientificName"
-            :conservationStatus="suggestion.conservationStatus.vicAdvisory"
-            :imageSource="get(suggestion, 'images[0].s3Url')"
-            @click.native="select(suggestion)"
-          ></specieSearchItem>
-        </li>
-      </ul>
-    </template>
+      <template v-else>
+        <div v-if="species" @click="searchSpecies" class="reload">
+          <i class="material-icons">autorenew</i>
+          <h1>{{species.length}} species found</h1>
+        </div>
+        <ul class="collection">
+          <li v-for="suggestion in species">
+            <specieSearchItem
+              :commonName="suggestion.commonName"
+              :scientificName="suggestion.scientificName"
+              :conservationStatus="suggestion.conservationStatus.vicAdvisory"
+              :imageSource="get(suggestion, 'images[0].s3Url')"
+              @click.native="select(suggestion)"
+            ></specieSearchItem>
+          </li>
+        </ul>
+      </template>
+    </div>
   </div>
 </template>
 
@@ -27,6 +31,7 @@
 import { createNamespacedHelpers } from 'vuex';
 import { debounce, get } from 'lodash'; // eslint-disable-line
 import specieSearchItem from '../components/specieSearchItem';
+import explorerMap from './explorerMap';
 
 const { mapActions, mapGetters } = createNamespacedHelpers('explore');
 
@@ -35,6 +40,7 @@ export default {
   name: 'explore',
   components: {
     specieSearchItem,
+    'explorer-map': explorerMap,
   },
   data () {
     return {
@@ -77,10 +83,11 @@ export default {
 }
 
 .container {
-  /*margin: .5rem;*/
+  margin: 0 .5rem 0 .5rem;
   margin-bottom: 3rem;
   display: flex;
   flex-direction: column;
+  flex: 1 0 auto;
 }
 
 .collection {
@@ -93,6 +100,8 @@ export default {
 }
 
 .reload {
+  display: flex;
+  justify-content: space-around;
   margin: .5rem;
 }
 </style>

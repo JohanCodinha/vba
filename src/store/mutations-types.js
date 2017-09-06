@@ -22,3 +22,7 @@ export const UPDATE_STATUS = 'UPDATE_STATUS';
 
 // Account module
 export const STATUS = 'STATUS';
+
+// Explore module
+export const ADD_RECORDS = 'ADD_RECORDS';
+
