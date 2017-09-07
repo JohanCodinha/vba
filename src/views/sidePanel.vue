@@ -3,12 +3,13 @@
     <div class="content">
       <ul>
         <li>
+          <p v-if="displayName">{{displayName}}</p>
           <router-link @click.native="closeMenu" :to="{ name: 'Signin'}">
             {{isLogin ? 'Sign out' : 'Sign in'}}
           </router-link>
         </li>
         <li>
-          <a href="#">Feedback</a>
+          <a href="mailto:vbago.support@gmail.com">Email a Feedback</a>
         </li>
         <li>
           <a href="#">Settings</a>
@@ -33,6 +34,7 @@ export default {
   computed: {
     ...mapGetters([
       'isLogin',
+      'displayName',
     ]),
   },
   methods: {

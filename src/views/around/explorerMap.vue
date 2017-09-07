@@ -42,7 +42,7 @@ export default {
         // maxBounds: bounds,
         interactive: false,
       });
-
+      this.$data.map = map;
       map.on('load', () => {
         console.log('adding sources');
         map.addSource('records', {
@@ -61,16 +61,12 @@ export default {
             'circle-color': '#007cbf',
           },
         });
+        this.addRecordData();
       });
-      this.$data.map = map;
     },
-  },
-  watch: {
-    // eslint-disable-next-line
-    position: function () { this.createMap() },
-    // eslint-disable-next-line
-    records: function (records) {
-      if (!this.$data.map.getSource('records')) return;
+    addRecordData () {
+      console.log('adding record');
+      const records = this.records;
       const features = records.map((record) => {
         const feature = {
           type: 'Feature',
@@ -88,6 +84,15 @@ export default {
       });
       const recordsSource = this.$data.map.getSource('records');
       recordsSource.setData(formatedFeatures);
+    },
+  },
+  watch: {
+    // eslint-disable-next-line
+    position: function () { this.createMap() },
+    // eslint-disable-next-line
+    records: function (records) {
+      if (!this.$data.map.getSource('records')) return;
+      this.addRecordData();
     },
   },
   // eslint-disable-next-line

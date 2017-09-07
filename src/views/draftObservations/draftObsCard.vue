@@ -10,7 +10,7 @@
           <dt>Status</dt>
           <dd>{{status}}</dd>
       </dl>
-      <div class="action">
+      <div v-if="false" class="action">
         <button class="button"
           :class="{ deactivated: !isUploadable }" @click=''>
           upload</button>

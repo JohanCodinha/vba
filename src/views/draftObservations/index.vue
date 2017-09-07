@@ -1,7 +1,7 @@
 <template>
-  <div class="container">
+  <div :class="{center: !observations.length}" class="container">
     <div class="description">
-<!--       <h1>{{observations.length}} draft{{observations.length > 1 ? 's' : ''}} observation</h1> -->
+      <p v-if="!observations.length">Contribute by adding a</p>
       <a class="button"  @click='newObservation'>
         <i class="material-icons">add_circle</i>
         <p>New general observation</p>
@@ -75,6 +75,7 @@ export default {
   0 2px 2px 0 rgba(0,0,0,0.14),
   0 1px 5px 0 rgba(0,0,0,0.12),
   0 3px 1px -2px rgba(0,0,0,0.2);
+  width: 75%;
 }
 
 .button p {
@@ -85,10 +86,23 @@ export default {
 }
 
 .description {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1rem;
+}
+
+.description > p {
+  font-size: 2rem;
   margin: 1rem;
 }
 
 h1 {
   font-size: 1.8rem
+}
+
+.center {
+  justify-content: center;
+  align-items: center;
 }
 </style>
