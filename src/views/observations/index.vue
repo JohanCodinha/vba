@@ -1,5 +1,11 @@
 <template>
-  <div class="container">
+  <div :class="{ center: (logedIn && generalObs.length < 1)}" class="container">
+  <div class="no-obs" v-if="logedIn && generalObs.length < 1">
+    <p>No observation</p>
+    <router-link to='/observations/drafts'>
+      let's get started
+    </router-link>
+  </div>
   <div class="loggedOut" v-if="!logedIn">
     <h1>
       <router-link class="link" :to="{ name: 'Signin'}">Sign in</router-link>
@@ -83,4 +89,12 @@ h1 {
   line-height: normal;
 }
 
+.center {
+  align-items: center;
+  justify-content: center;
+}
+
+.no-obs {
+  font-size: 1.8rem;
+}
 </style>

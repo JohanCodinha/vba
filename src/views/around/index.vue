@@ -45,7 +45,6 @@ export default {
   },
   data () {
     return {
-      // species: [],
     };
   },
   props: {
@@ -63,9 +62,6 @@ export default {
     ...mapActions([
       'searchSpecies',
     ]),
-    // fetchSpecies () {
-    //   console.log('fetching');
-    // },
     get (object, path) {
       return get(object, path);
     },
@@ -103,7 +99,12 @@ export default {
 
 .reload {
   display: flex;
-  justify-content: space-around;
+  align-items: center;
+  justify-content: center;
   margin: .5rem;
+}
+
+.reload > i {
+  margin-right: 2rem;
 }
 </style>

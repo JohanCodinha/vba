@@ -11,10 +11,10 @@
         <li>
           <a href="mailto:vbago.support@gmail.com">Email a Feedback</a>
         </li>
-        <li>
+        <li class="unavailable">
           <a href="#">Settings</a>
         </li>
-        <li>
+        <li class="unavailable">
           <a href="#">About</a>
         </li>
       </ul>
@@ -97,4 +97,9 @@ li a {
 .content-text {
   margin-left: .5rem;
 }
+
+.unavailable > a {
+  color: #9894a8;
+}
+
 </style>
