@@ -9,7 +9,7 @@
           </router-link>
         </li>
         <li>
-          <a href="mailto:vbago.support@gmail.com">Email a Feedback</a>
+          <a href="mailto:vbago.feedback@gmail.com">Leave Feedback</a>
         </li>
         <li class="unavailable">
           <a href="#">Settings</a>

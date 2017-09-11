@@ -38,12 +38,12 @@ export default {
         if (!this.activeDraft) return null;
         return this.activeDraft.count
           ? this.activeDraft.count
-          : 0;
+          : 1;
       },
       set: function setter (value) {
         const count = Number(value);
         const obsId = this.obsId;
-        if (!isNaN(count) && count >= 0) {
+        if (!isNaN(count) && count >= 1) {
           console.log(`count set to ${value}`);
           this.$store.dispatch('setCount', { count, obsId });
         } else {

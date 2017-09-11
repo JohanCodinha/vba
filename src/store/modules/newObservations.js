@@ -127,7 +127,7 @@ const actions = {
     formData.append('commonName', commonName);
     formData.append('scientificNmae', scientificName);
     formData.append('taxonId', taxonId);
-    formData.append('count', count || 0);
+    formData.append('count', count || 1);
     formData.append('dateTime', datetime);
     formData.append('extraInfoCode', extraInfoCode);
     formData.append('userId', userUid);

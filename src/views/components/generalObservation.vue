@@ -14,7 +14,7 @@
         <dl>
           <dt>Common name :</dt>
           <dd>{{commonName}}</dd>
-          <dt>Scientifique :</dt>
+          <dt>Scientific :</dt>
           <dd>{{scientificName}}</dd>
         </dl>
         </template>
@@ -56,7 +56,7 @@
             Notes :
           </label>
           <textarea class="textarea" name="notes"
-            placeholder="Stuck in the fence..."></textarea>
+            placeholder="..."></textarea>
         </div>
       </div>
       <div class="form-block">
