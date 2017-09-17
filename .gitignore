@@ -23,5 +23,7 @@ npm-debug.log*
 # esLint #
 ##########
 .eslintcache
-
+# vim #
+#######
+*.swp
 src/components/token.js	
